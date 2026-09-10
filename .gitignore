@@ -1,0 +1,18 @@
+# macOS
+.DS_Store
+**/.DS_Store
+
+# Dependencies (Netlify installs these at build time)
+node_modules/
+
+# Secrets — these live in Netlify environment variables, never in the repo
+.env
+.env.*
+*serviceAccount*.json
+*service-account*.json
+
+# Netlify local state
+.netlify/
+
+# Claude Code local machine settings (personal, not shared)
+.claude/settings.local.json

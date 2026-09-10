@@ -1,0 +1,615 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Passion Flow — Phone Animation</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+  <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/7.23.2/babel.min.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <script>
+    tailwind.config = { theme: { extend: {
+      fontFamily: { serif: ['Playfair Display','Georgia','serif'], sans: ['Inter','system-ui','sans-serif'] },
+      colors: { accent: '#C49A7A', body: '#614433', headline: '#2E1C16', cream: '#FAF6F2' } } } };
+  </script>
+  <style>
+    * { -webkit-tap-highlight-color: transparent; box-sizing: border-box; }
+    html, body { overflow-x: hidden; max-width: 100%; }
+    body { background: #FAF6F2; min-height: 100vh; margin: 0; font-family: 'Inter', sans-serif; position: relative; }
+    @keyframes checkPop { 0%{transform:scale(0);opacity:0} 50%{transform:scale(1.3)} 100%{transform:scale(1);opacity:1} }
+    .check-pop { animation: checkPop 0.35s cubic-bezier(0.34,1.56,0.64,1) forwards; }
+    @keyframes fadeIn { from{opacity:0;transform:translateY(8px)} to{opacity:1;transform:translateY(0)} }
+    .fade-in { animation: fadeIn 0.4s ease forwards; }
+    @keyframes slideRight { from{opacity:0;transform:translateX(30px)} to{opacity:1;transform:translateX(0)} }
+    @keyframes slideLeft { from{opacity:0;transform:translateX(-30px)} to{opacity:1;transform:translateX(0)} }
+    .slide-right { animation: slideRight 0.35s ease forwards; }
+    .slide-left { animation: slideLeft 0.35s ease forwards; }
+    @keyframes spinOnce { from{transform:rotate(0)} to{transform:rotate(180deg)} }
+    .shuffle-spin { animation: spinOnce 0.4s cubic-bezier(0.4,0,0.2,1); }
+    @keyframes floatStar { 0%{opacity:0;transform:translateY(0) scale(0)} 30%{opacity:1;transform:translateY(-8px) scale(1)} 100%{opacity:0;transform:translateY(-28px) scale(.5)} }
+    @keyframes gentleGlow { 0%,100%{box-shadow:0 0 12px rgba(196,154,122,0.15)} 50%{box-shadow:0 0 20px rgba(196,154,122,0.3)} }
+    .active-glow { animation: gentleGlow 2.5s ease-in-out infinite; }
+    @keyframes softPulse { 0%,100%{opacity:.7;transform:scale(1)} 50%{opacity:1;transform:scale(1.05)} }
+    .almost-there { animation: softPulse 2s ease-in-out infinite; }
+    @keyframes bookmarkSave { 0%{transform:scale(1)} 40%{transform:scale(1.4)} 100%{transform:scale(1)} }
+    .bookmark-save { animation: bookmarkSave 0.3s ease; }
+    @keyframes toastUp { 0%{opacity:0;transform:translateX(-50%) translateY(12px)} 15%{opacity:1;transform:translateX(-50%) translateY(0)} 80%{opacity:1;transform:translateX(-50%) translateY(0)} 100%{opacity:0;transform:translateX(-50%) translateY(-6px)} }
+    .toast-up { animation: toastUp 2.2s ease forwards; }
+    @keyframes sheetUp { from{opacity:0;transform:translateY(40px)} to{opacity:1;transform:translateY(0)} }
+    .sheet-up { animation: sheetUp 0.35s cubic-bezier(0.34,1.2,0.64,1) forwards; }
+    @keyframes landIn { from{opacity:0;transform:translateY(18px)} to{opacity:1;transform:translateY(0)} }
+    .land-in { animation: landIn 0.7s ease forwards; }
+    @keyframes tapRing { 0%{transform:scale(0.5);opacity:1} 100%{transform:scale(2.2);opacity:0} }
+    @keyframes tapBtnBounce { 0%,30%,100%{transform:scale(1)} 38%{transform:scale(0.78)} 46%{transform:scale(1.08)} 52%{transform:scale(1)} }
+    @keyframes rowTapAnim { 0%,22%,100%{background:transparent;transform:scale(1)} 30%{background:rgba(232,144,168,0.2);transform:scale(0.984)} 44%{background:rgba(232,144,168,0.06);transform:scale(1)} }
+    @keyframes btnTapAnim { 0%,38%,100%{transform:scale(1)} 45%{transform:scale(0.82)} 55%{transform:scale(1.07)} 62%{transform:scale(1)} }
+    @keyframes sliderFillAnim { 0%{width:18%} 60%,100%{width:80%} }
+    @keyframes sliderThumbAnim { 0%{left:18%} 60%,100%{left:80%} }
+    @keyframes sliderLabelOut { 0%,18%{opacity:1} 30%,100%{opacity:0} }
+    @keyframes sliderLabelIn { 0%,35%{opacity:0} 50%,100%{opacity:1} }
+    @keyframes shareBtnTap { 0%,52%,100%{transform:scale(1)} 60%{transform:scale(0.84)} 70%{transform:scale(1.06)} 76%{transform:scale(1)} }
+    @keyframes chipTap1 { 0%,20%{background:transparent;border-color:rgba(196,154,122,0.3);color:#614433;transform:scale(1)} 28%{transform:scale(0.88)} 36%,100%{background:#E890A8;border-color:#E890A8;color:white;transform:scale(1)} }
+    @keyframes chipTap2 { 0%,38%{background:transparent;border-color:rgba(196,154,122,0.3);color:#614433;transform:scale(1)} 46%{transform:scale(0.88)} 54%,100%{background:#C8A8E8;border-color:#C8A8E8;color:white;transform:scale(1)} }
+    @keyframes inProgOut { 0%,30%{opacity:1;max-height:80px;margin-bottom:4px} 50%,100%{opacity:0;max-height:0;margin-bottom:0;overflow:hidden} }
+    @keyframes inProgLabelOut { 0%,30%{opacity:0.3} 50%,100%{opacity:0} }
+    @keyframes resetRowIn { 0%,40%{opacity:0;transform:translateY(4px)} 58%,100%{opacity:1;transform:translateY(0)} }
+    @keyframes count4out { 0%,30%{opacity:1} 45%,100%{opacity:0} }
+    @keyframes count5in { 0%,42%{opacity:0} 58%,100%{opacity:1} }
+    @keyframes stepperFill { 0%,35%{background:rgba(255,171,145,0.2);border-color:#FFAB91} 55%,100%{background:#FFAB91;border-color:#FFAB91} }
+    @keyframes sheetSlide { from{transform:translateY(100%)} to{transform:translateY(0)} }
+    @keyframes cardFloat { from{transform:translateY(0)} to{transform:translateY(-6px)} }
+    @keyframes dotPop { from{opacity:0;transform:scale(0)} to{opacity:1;transform:scale(1)} }
+    @keyframes breathe { 0%,100%{transform:scale(1);opacity:0.85} 50%{transform:scale(1.02);opacity:1} }
+    .breathe { animation: breathe 4s ease-in-out infinite; }
+    @keyframes wheelGlow { 0%,100%{filter:drop-shadow(0 0 8px rgba(196,154,122,0.15))} 50%{filter:drop-shadow(0 0 16px rgba(196,154,122,0.3))} }
+    .wheel-glow { animation: wheelGlow 3s ease-in-out infinite; }
+    @keyframes slowSpin { from{transform:rotate(0deg)} to{transform:rotate(360deg)} }
+    @keyframes spinLand { 0%{transform:rotate(0deg)} 55%{transform:rotate(1150deg)} 85%{transform:rotate(1392deg)} 93%{transform:rotate(1412deg)} 100%{transform:rotate(1404deg)} }
+    .textarea-journal:focus { outline:none; box-shadow:0 0 0 2px rgba(196,154,122,0.3); }
+    input:focus { outline:none; box-shadow:0 0 0 2px rgba(196,154,122,0.3); }
+    ::placeholder { color:#C49A7A; opacity:0.5; }
+    .mood-slider { -webkit-appearance:none; appearance:none; width:100%; height:6px; border-radius:100px; outline:none; transition:background .3s ease; }
+    .mood-slider::-webkit-slider-thumb { -webkit-appearance:none; appearance:none; width:26px; height:26px; border-radius:50%; background:#C49A7A; cursor:pointer; box-shadow:0 2px 8px rgba(196,154,122,.4); border:3px solid white; transition:transform .2s ease; }
+    .mood-slider::-webkit-slider-thumb:hover { transform:scale(1.15); }
+    ::-webkit-scrollbar { width:0; height:0; }
+    .feeling-chip { transition:all .25s ease; }
+    .feeling-chip:active { transform:scale(.95); }
+    .sc { background:white; border-radius:20px; border:1px solid #C49A7A; padding:20px; box-shadow:0 0 18px rgba(196,154,122,0.12),0 2px 8px rgba(0,0,0,0.03); }
+    @keyframes splashLogoIn { from{opacity:0;transform:translateY(20px) scale(0.95)} to{opacity:1;transform:translateY(0) scale(1)} }
+    @keyframes splashTagIn { from{opacity:0;transform:translateY(10px)} to{opacity:1;transform:translateY(0)} }
+    @keyframes splashGlow { 0%,100%{opacity:0.3;transform:scale(1)} 50%{opacity:0.6;transform:scale(1.05)} }
+    @keyframes splashOut { from{opacity:1} to{opacity:0} }
+    .splash-logo { animation: splashLogoIn 0.8s cubic-bezier(0.34,1.56,0.64,1) forwards; }
+    .splash-tag { animation: splashTagIn 0.6s ease forwards; animation-delay:0.6s; opacity:0; }
+    .splash-glow { animation: splashGlow 2.5s ease-in-out infinite; }
+    .splash-out { animation: splashOut 0.6s ease forwards; }
+    @keyframes splashSpin {
+      0%   { transform: rotate(0deg); }
+      18%  { transform: rotate(540deg); }
+      40%  { transform: rotate(840deg); }
+      62%  { transform: rotate(990deg); }
+      80%  { transform: rotate(1055deg); }
+      92%  { transform: rotate(1075deg); }
+      100% { transform: rotate(1080deg); }
+    }
+    @keyframes heroIdeaSlide { from{opacity:0;transform:translateY(8px)} to{opacity:1;transform:translateY(0)} }
+    @keyframes heroPulse { 0%,100%{box-shadow:0 0 0 0 rgba(196,154,122,0)} 50%{box-shadow:0 0 0 6px rgba(196,154,122,0.2)} }
+    @keyframes obFadeUp { from{opacity:0;transform:translateY(14px)} to{opacity:1;transform:translateY(0)} }
+    @keyframes obBlurIn { from{opacity:0;filter:blur(6px)} to{opacity:1;filter:blur(0)} }
+    @keyframes obGlowPulse { 0%,100%{opacity:0.6;transform:scale(1)} 50%{opacity:1;transform:scale(1.08)} }
+    @keyframes obProgress { from{width:0%} to{width:100%} }
+    @keyframes obWordIn { from{opacity:0;transform:translateY(8px) scale(0.95)} to{opacity:1;transform:translateY(0) scale(1)} }
+    .ob-fade-up { animation: obFadeUp 0.7s ease forwards; opacity:0; }
+    .ob-blur-in { animation: obBlurIn 0.5s ease forwards; opacity:0; }
+    .ob-word-in { animation: obWordIn 0.5s cubic-bezier(0.34,1.56,0.64,1) forwards; opacity:0; }
+    @keyframes overlayIn { from{opacity:0;transform:scale(0.9)} to{opacity:1;transform:scale(1)} }
+    @keyframes overlayOut { from{opacity:1;transform:scale(1)} to{opacity:0;transform:scale(0.95)} }
+    .overlay-in { animation: overlayIn 0.4s cubic-bezier(0.34,1.56,0.64,1) forwards; }
+    .overlay-out { animation: overlayOut 0.3s ease forwards; }
+    @keyframes confetti { 0%{opacity:1;transform:translateY(0) rotate(0)} 100%{opacity:0;transform:translateY(60px) rotate(360deg)} }
+    @keyframes btnPop { 0%{transform:scale(1)} 30%{transform:scale(0.92)} 60%{transform:scale(1.05)} 100%{transform:scale(1)} }
+    .btn-pop { animation: btnPop 0.4s ease; }
+
+    html,body{margin:0;padding:0;background:transparent;}
+    #stage{min-height:100vh;display:flex;align-items:center;justify-content:center;}
+    #hint{position:fixed;top:14px;left:50%;transform:translateX(-50%);font-family:Inter,sans-serif;font-size:12px;color:#614433;background:rgba(255,255,255,0.8);border:1px solid rgba(196,154,122,0.3);border-radius:20px;padding:6px 14px;z-index:99;transition:opacity .5s;box-shadow:0 2px 10px rgba(0,0,0,0.06);}
+  </style>
+</head>
+<body>
+  <div id="hint">Space = pause · ←/→ = step · B = background · +/− = zoom</div>
+  <div id="stage"><div id="root"></div></div>
+  <script type="text/babel" data-presets="react">
+    var LANDSLICES=[
+        {label:'Create',emoji:'✨',color:'#FCE4EC',border:'#F0B8C8',check:'#E890A8',benefit:'build your future & create for fun'},
+        {label:'Mindset',emoji:'📚',color:'#FDEBD0',border:'#F0D0A0',check:'#E8BA78',benefit:'grow your mind with intention'},
+        {label:'Connect',emoji:'💛',color:'#EDE6F6',border:'#D4C2E8',check:'#C8A8E8',benefit:'be with the people who matter'},
+        {label:'Move',emoji:'🏃',color:'#E8F5E9',border:'#C8E6C9',check:'#81C784',benefit:'move your body, feel alive'},
+        {label:'Reset',emoji:'🌿',color:'#FBE9E7',border:'#F5C6BE',check:'#FFAB91',benefit:'take care of yourself fully'}
+    ];
+    var BGS=['transparent','#FFFFFF','#F3DCDC','#111111'];
+    function PhoneReel(){
+      var _hp=React.useState(0),heroPhone=_hp[0],setHeroPhone=_hp[1];
+      var _p=React.useState(false),paused=_p[0],setPaused=_p[1];
+      var _b=React.useState(0),bg=_b[0],setBg=_b[1];
+      var _s=React.useState(1.55),scale=_s[0],setScale=_s[1];
+      React.useEffect(function(){
+        if(paused)return;
+        var durations=[1750,1600,1600,1750,1850,1850,1850,1950,1600,1750];
+        var t=setTimeout(function(){setHeroPhone(function(p){return(p+1)%10;});},durations[heroPhone]||1700);
+        return function(){clearTimeout(t);};
+      },[heroPhone,paused]);
+      React.useEffect(function(){
+        function onKey(e){
+          if(e.code==='Space'){e.preventDefault();setPaused(function(p){return !p;});}
+          else if(e.key==='ArrowRight'){setPaused(true);setHeroPhone(function(p){return (p+1)%10;});}
+          else if(e.key==='ArrowLeft'){setPaused(true);setHeroPhone(function(p){return (p+9)%10;});}
+          else if(e.key==='b'||e.key==='B'){setBg(function(i){return (i+1)%BGS.length;});}
+          else if(e.key==='+'||e.key==='='){setScale(function(s){return Math.min(4,+(s+0.15).toFixed(2));});}
+          else if(e.key==='-'||e.key==='_'){setScale(function(s){return Math.max(0.6,+(s-0.15).toFixed(2));});}
+        }
+        window.addEventListener('keydown',onKey);
+        var h=document.getElementById('hint');var to=setTimeout(function(){if(h)h.style.opacity='0';},5000);
+        return function(){window.removeEventListener('keydown',onKey);clearTimeout(to);};
+      },[]);
+      React.useEffect(function(){document.getElementById('stage').style.background=BGS[bg];},[bg]);
+      var slices=LANDSLICES;
+      return <div id="phone-capture" style={{transform:'scale('+scale+')',transformOrigin:'center'}}>
+          <div style={{position:'relative',width:256,flexShrink:0,margin:'0 auto'}}>
+            <div style={{position:'absolute',left:-2,top:50,width:3,height:14,background:'#2C2C2E',borderRadius:'3px 0 0 3px'}}/>
+            <div style={{position:'absolute',left:-2,top:72,width:3,height:25,background:'#2C2C2E',borderRadius:'3px 0 0 3px'}}/>
+            <div style={{position:'absolute',left:-2,top:104,width:3,height:25,background:'#2C2C2E',borderRadius:'3px 0 0 3px'}}/>
+            <div style={{position:'absolute',right:-2,top:86,width:3,height:42,background:'#2C2C2E',borderRadius:'0 3px 3px 0'}}/>
+            <div style={{borderRadius:42,border:'7px solid #1C1C1E',boxShadow:'inset 0 0 0 1px rgba(255,255,255,0.06),0 0 0 1.5px #2a2a2a,0 28px 72px rgba(0,0,0,0.28)',background:'#FAF6F2',overflow:'hidden'}}>
+              <div style={{background:'#FAF6F2',height:42,display:'flex',alignItems:'flex-end',paddingBottom:6,paddingLeft:18,paddingRight:14,position:'relative'}}>
+                <span style={{fontSize:10,fontWeight:700,fontFamily:'Inter,sans-serif',color:'#1C1C1E',letterSpacing:-0.3,lineHeight:1}}>9:41</span>
+                <div style={{position:'absolute',left:'50%',transform:'translateX(-50%)',top:8,width:80,height:25,background:'#1C1C1E',borderRadius:14}}/>
+                <div style={{marginLeft:'auto',display:'flex',alignItems:'center',gap:4}}>
+                  <svg width="13" height="9" viewBox="0 0 16 11" fill="#1C1C1E"><rect x="0" y="6" width="3" height="5" rx="0.5"/><rect x="4.5" y="4" width="3" height="7" rx="0.5"/><rect x="9" y="2" width="3" height="9" rx="0.5"/><rect x="13.5" y="0" width="3" height="11" rx="0.5" opacity="0.3"/></svg>
+                  <svg width="20" height="10" viewBox="0 0 24 12" fill="none"><rect x="0.5" y="0.5" width="21" height="11" rx="3.5" stroke="#1C1C1E" strokeOpacity="0.35"/><rect x="22" y="3.5" width="2" height="5" rx="1" fill="#1C1C1E" fillOpacity="0.4"/><rect x="2" y="2" width="16" height="8" rx="2" fill="#1C1C1E"/></svg>
+                </div>
+              </div>
+              <div style={{height:390,overflow:'hidden',position:'relative',background:'#FAF6F2'}}>
+                {heroPhone===1&&<div key="s1" className="fade-in" style={{padding:'7px 11px 0',display:'flex',flexDirection:'column',height:'100%',background:'#FAF6F2',boxSizing:'border-box'}}>
+                  <div style={{display:'flex',justifyContent:'space-between',alignItems:'flex-start',marginBottom:2}}>
+                    <div style={{minWidth:0}}>
+                      <p style={{fontFamily:'Inter,sans-serif',fontSize:5,fontWeight:600,color:'#614433',opacity:0.3,textTransform:'uppercase',letterSpacing:'0.12em'}}>WEDNESDAY, JULY 8</p>
+                      <p style={{fontFamily:'Georgia,serif',fontSize:11,color:'#2E1C16',marginTop:1}}>Welcome back, Megan. {'\u2728'}</p>
+                    </div>
+                    <div style={{display:'flex',alignItems:'center',gap:3,border:'1px solid rgba(196,154,122,0.35)',borderRadius:99,padding:'2px 6px',flexShrink:0}}>
+                      <span style={{fontSize:9}}>{'\uD83D\uDD25'}</span>
+                      <div style={{lineHeight:1.05}}>
+                        <p style={{fontFamily:'Inter,sans-serif',fontSize:8,fontWeight:700,color:'#2E1C16'}}>10</p>
+                        <p style={{fontFamily:'Inter,sans-serif',fontSize:4,color:'#614433',opacity:0.5}}>day streak</p>
+                      </div>
+                    </div>
+                  </div>
+                  <p style={{fontFamily:'Georgia,serif',fontSize:8,fontStyle:'italic',color:'#614433',opacity:0.4,marginBottom:4}}>One meaningful idea at a time.</p>
+                  <p style={{fontFamily:'Georgia,serif',fontSize:10.5,fontStyle:'italic',color:'#2E1C16',marginBottom:3}}>what do you need right now?</p>
+                  <div style={{position:'relative',width:132,height:132,alignSelf:'center'}}>
+                    <svg width="132" height="132" viewBox="0 0 190 190" style={{transform:'rotate(324deg)',transformOrigin:'center',display:'block'}}>
+                      {slices.map(function(s,i){
+                        var a=i*72,ae=(i+1)*72,r=86,ir=32,cx=95,cy=95;
+                        var rd1=(a-90)*Math.PI/180,rd2=(ae-90)*Math.PI/180;
+                        var os={x:cx+r*Math.cos(rd1),y:cy+r*Math.sin(rd1)},oe={x:cx+r*Math.cos(rd2),y:cy+r*Math.sin(rd2)};
+                        var ie={x:cx+ir*Math.cos(rd2),y:cy+ir*Math.sin(rd2)},is2={x:cx+ir*Math.cos(rd1),y:cy+ir*Math.sin(rd1)};
+                        var path='M '+os.x.toFixed(1)+' '+os.y.toFixed(1)+' A '+r+' '+r+' 0 0 1 '+oe.x.toFixed(1)+' '+oe.y.toFixed(1)+' L '+ie.x.toFixed(1)+' '+ie.y.toFixed(1)+' A '+ir+' '+ir+' 0 0 0 '+is2.x.toFixed(1)+' '+is2.y.toFixed(1)+' Z';
+                        var mid=(a+ae)/2;var midRd=(mid-90)*Math.PI/180;var lr=(r+ir)/2;
+                        var lx=cx+lr*Math.cos(midRd),ly=cy+lr*Math.sin(midRd);
+                        var done=i!==0;
+                        return <g key={i}>
+                          <path d={path} fill={s.color} fillOpacity={done?0.45:0.95} stroke={s.border} strokeWidth={done?1.5:2.5}/>
+                          <text x={lx.toFixed(1)} y={(ly-1).toFixed(1)} textAnchor="middle" style={{fontSize:'13px',opacity:done?0.75:1}}>{s.emoji}</text>
+                          {done&&<text x={(lx+10).toFixed(1)} y={(ly-5).toFixed(1)} textAnchor="middle" fill={s.check||s.border} style={{fontSize:'8px',fontWeight:700}}>{'\u2713'}</text>}
+                          <text x={lx.toFixed(1)} y={(ly+10).toFixed(1)} textAnchor="middle" fill="#614433" style={{fontSize:'6.5px',fontFamily:'Inter,sans-serif',fontWeight:700,opacity:done?0.4:0.85}}>{s.label}</text>
+                        </g>;
+                      })}
+                      <circle cx="95" cy="95" r="33" fill="white" stroke="rgba(196,154,122,0.25)" strokeWidth="1.5"/>
+                    </svg>
+                    <div style={{position:'absolute',left:'50%',transform:'translateX(-50%)',top:-5,zIndex:10}}>
+                      <svg width="15" height="15" viewBox="0 0 20 20" fill="none"><path d="M10 16L3 4h14L10 16z" fill="#C49A7A" stroke="white" strokeWidth="1.5"/></svg>
+                    </div>
+                    <div style={{position:'absolute',left:'50%',top:14,transform:'translateX(-50%)',width:22,height:22,borderRadius:99,border:'2px solid #E890A8',zIndex:9,animation:'tapRing 1.3s ease-out infinite'}}/>
+                    <div style={{position:'absolute',left:'50%',top:'50%',transform:'translate(-50%,-50%)',width:50,height:50,borderRadius:'50%',background:'rgba(255,255,255,0.94)',display:'flex',flexDirection:'column',alignItems:'center',justifyContent:'center',boxShadow:'0 2px 12px rgba(196,154,122,0.18)'}}>
+                      <p style={{fontFamily:'Georgia,serif',fontStyle:'italic',fontSize:6.5,color:'#2E1C16',lineHeight:1.15,fontWeight:500}}>Start your</p>
+                      <p style={{fontFamily:'Georgia,serif',fontStyle:'italic',fontSize:6.5,color:'#2E1C16',lineHeight:1.15,fontWeight:500}}>daily flow</p>
+                      <p style={{fontFamily:'Inter,sans-serif',fontSize:3.5,color:'#C49A7A',marginTop:1}}>choose one</p>
+                    </div>
+                  </div>
+                  <div style={{display:'flex',alignItems:'center',gap:0,width:'100%',padding:'0 4px',boxSizing:'border-box',marginTop:6}}>
+                    {[{e:'\u2728',l:'Create',c:'#E890A8',done:false},{e:'\uD83D\uDCDA',l:'Mindset',c:'#E8BA78',done:true},{e:'\uD83D\uDC9B',l:'Connect',c:'#C8A8E8',done:true},{e:'\uD83C\uDFC3',l:'Move',c:'#81C784',done:true},{e:'\uD83C\uDF3F',l:'Reset',c:'#FFAB91',done:true}].map(function(t,i){return [
+                      <div key={t.l} style={{display:'flex',flexDirection:'column',alignItems:'center'}}>
+                        <div style={{width:13,height:13,borderRadius:99,background:t.done?t.c:'white',border:'1.5px solid '+(t.done?t.c:'rgba(196,154,122,0.3)'),display:'flex',alignItems:'center',justifyContent:'center',marginBottom:1}}>{t.done?<span style={{fontSize:6.5,color:'white',fontWeight:700}}>{'\u2713'}</span>:<span style={{fontSize:6.5,opacity:0.5}}>{t.e}</span>}</div>
+                        <span style={{fontFamily:'Inter,sans-serif',fontSize:4.5,color:t.done?t.c:'rgba(97,68,51,0.4)',fontWeight:t.done?600:400}}>{t.l}</span>
+                      </div>,
+                      i<4&&<div key={'l'+i} style={{flex:1,height:1.5,background:i===0?'rgba(196,154,122,0.18)':'rgba(196,154,122,0.3)',marginBottom:11}}/>
+                    ];})}
+                  </div>
+                  <p style={{fontFamily:'Inter,sans-serif',fontSize:5.5,color:'#614433',opacity:0.35,textAlign:'center',marginTop:2,marginBottom:3}}>4/5 completed</p>
+                  <p style={{fontFamily:'Inter,sans-serif',fontSize:5,fontWeight:700,color:'#614433',opacity:0.3,textTransform:'uppercase',letterSpacing:'0.1em',marginBottom:3}}>COMPLETED</p>
+                  {[['\uD83D\uDCDA','Write 3 things you are proud of','#FDEBD0','#E8BA78'],['\uD83D\uDC9B','Voice note to a friend you miss','#EDE6F6','#C8A8E8'],['\uD83C\uDFC3','Walk outside for 20 minutes','#E8F5E9','#81C784'],['\uD83C\uDF3F','5-min breathwork session','#FFF3EE','#FFAB91']].map(function(row,i){return <div key={i} style={{display:'flex',alignItems:'center',gap:5,padding:'2.5px 6px',background:row[2],borderRadius:7,marginBottom:2.5}}><span style={{fontSize:8}}>{row[0]}</span><p style={{fontFamily:'Inter,sans-serif',fontSize:6,color:'#2E1C16',textDecoration:'line-through',opacity:0.45,flex:1}}>{row[1]}</p><span style={{fontSize:7.5,color:row[3]}}>{'\u2713'}</span></div>;})}
+                </div>}
+                {heroPhone===0&&<div key="s0" className="fade-in" style={{padding:'7px 11px 0',display:'flex',flexDirection:'column',height:'100%',background:'#FAF6F2',boxSizing:'border-box'}}>
+                  <div style={{display:'flex',justifyContent:'space-between',alignItems:'flex-start',marginBottom:2}}>
+                    <div style={{minWidth:0}}>
+                      <p style={{fontFamily:'Inter,sans-serif',fontSize:5,fontWeight:600,color:'#614433',opacity:0.3,textTransform:'uppercase',letterSpacing:'0.12em'}}>WEDNESDAY, JULY 8</p>
+                      <p style={{fontFamily:'Georgia,serif',fontSize:11,color:'#2E1C16',marginTop:1}}>Welcome back, Megan. {'\u2728'}</p>
+                    </div>
+                    <div style={{display:'flex',alignItems:'center',gap:3,border:'1px solid rgba(196,154,122,0.35)',borderRadius:99,padding:'2px 6px',flexShrink:0}}>
+                      <span style={{fontSize:9}}>{'\uD83D\uDD25'}</span>
+                      <div style={{lineHeight:1.05}}>
+                        <p style={{fontFamily:'Inter,sans-serif',fontSize:8,fontWeight:700,color:'#2E1C16'}}>10</p>
+                        <p style={{fontFamily:'Inter,sans-serif',fontSize:4,color:'#614433',opacity:0.5}}>day streak</p>
+                      </div>
+                    </div>
+                  </div>
+                  <p style={{fontFamily:'Georgia,serif',fontSize:8,fontStyle:'italic',color:'#614433',opacity:0.4,marginBottom:4}}>One meaningful idea at a time.</p>
+                  <p style={{fontFamily:'Georgia,serif',fontSize:11,fontStyle:'italic',color:'#2E1C16',marginBottom:4}}>what do you need right now?</p>
+                  <div style={{position:'relative',width:155,height:155,alignSelf:'center'}}>
+                    <svg width="155" height="155" viewBox="0 0 190 190" style={{animation:'spinLand 1s cubic-bezier(0.16,0.8,0.28,1) forwards',transformOrigin:'center',display:'block'}}>
+                      {slices.map(function(s,i){
+                        var a=i*72,ae=(i+1)*72,r=86,ir=32,cx=95,cy=95;
+                        var rd1=(a-90)*Math.PI/180,rd2=(ae-90)*Math.PI/180;
+                        var os={x:cx+r*Math.cos(rd1),y:cy+r*Math.sin(rd1)},oe={x:cx+r*Math.cos(rd2),y:cy+r*Math.sin(rd2)};
+                        var ie={x:cx+ir*Math.cos(rd2),y:cy+ir*Math.sin(rd2)},is2={x:cx+ir*Math.cos(rd1),y:cy+ir*Math.sin(rd1)};
+                        var path='M '+os.x.toFixed(1)+' '+os.y.toFixed(1)+' A '+r+' '+r+' 0 0 1 '+oe.x.toFixed(1)+' '+oe.y.toFixed(1)+' L '+ie.x.toFixed(1)+' '+ie.y.toFixed(1)+' A '+ir+' '+ir+' 0 0 0 '+is2.x.toFixed(1)+' '+is2.y.toFixed(1)+' Z';
+                        var mid=(a+ae)/2;var midRd=(mid-90)*Math.PI/180;var lr=(r+ir)/2;
+                        var lx=cx+lr*Math.cos(midRd),ly=cy+lr*Math.sin(midRd);
+                        return <g key={i}>
+                          <path d={path} fill={s.color} fillOpacity={0.92} stroke={s.border} strokeWidth="1.5"/>
+                          <text x={lx.toFixed(1)} y={(ly-1).toFixed(1)} textAnchor="middle" style={{fontSize:'13px'}}>{s.emoji}</text>
+                          <text x={lx.toFixed(1)} y={(ly+10).toFixed(1)} textAnchor="middle" fill="#614433" style={{fontSize:'6.5px',fontFamily:'Inter,sans-serif',fontWeight:700,opacity:0.75}}>{s.label}</text>
+                        </g>;
+                      })}
+                      <circle cx="95" cy="95" r="33" fill="white" stroke="rgba(196,154,122,0.25)" strokeWidth="1.5"/>
+                    </svg>
+                    <div style={{position:'absolute',left:'50%',transform:'translateX(-50%)',top:-5,zIndex:10}}>
+                      <svg width="16" height="16" viewBox="0 0 20 20" fill="none"><path d="M10 16L3 4h14L10 16z" fill="#C49A7A" stroke="white" strokeWidth="1.5"/></svg>
+                    </div>
+                    <div style={{position:'absolute',left:'50%',top:'50%',transform:'translate(-50%,-50%)',width:56,height:56,borderRadius:'50%',background:'rgba(255,255,255,0.94)',display:'flex',flexDirection:'column',alignItems:'center',justifyContent:'center',boxShadow:'0 2px 12px rgba(196,154,122,0.18)'}}>
+                      <p style={{fontFamily:'Georgia,serif',fontStyle:'italic',fontSize:7.5,color:'#2E1C16',lineHeight:1.15,fontWeight:500}}>Start your</p>
+                      <p style={{fontFamily:'Georgia,serif',fontStyle:'italic',fontSize:7.5,color:'#2E1C16',lineHeight:1.15,fontWeight:500}}>daily flow</p>
+                      <p style={{fontFamily:'Inter,sans-serif',fontSize:4,color:'#C49A7A',marginTop:1.5}}>choose one</p>
+                      <p style={{fontFamily:'Inter,sans-serif',fontSize:4,color:'#C49A7A'}}>to start</p>
+                    </div>
+                  </div>
+                  <div style={{display:'flex',alignItems:'center',gap:0,width:'100%',padding:'0 4px',boxSizing:'border-box',marginTop:8}}>
+                    {[{e:'\u2728',l:'Create'},{e:'\uD83D\uDCDA',l:'Mindset'},{e:'\uD83D\uDC9B',l:'Connect'},{e:'\uD83C\uDFC3',l:'Move'},{e:'\uD83C\uDF3F',l:'Reset'}].map(function(t,i){return [
+                      <div key={t.l} style={{display:'flex',flexDirection:'column',alignItems:'center'}}>
+                        <div style={{width:13,height:13,borderRadius:99,background:'white',border:'1.5px solid rgba(196,154,122,0.3)',display:'flex',alignItems:'center',justifyContent:'center',marginBottom:1}}><span style={{fontSize:6.5,opacity:0.5}}>{t.e}</span></div>
+                        <span style={{fontFamily:'Inter,sans-serif',fontSize:4.5,color:'rgba(97,68,51,0.4)'}}>{t.l}</span>
+                      </div>,
+                      i<4&&<div key={'l'+i} style={{flex:1,height:1.5,background:'rgba(196,154,122,0.18)',marginBottom:11}}/>
+                    ];})}
+                  </div>
+                  <p style={{fontFamily:'Inter,sans-serif',fontSize:5.5,color:'#614433',opacity:0.35,textAlign:'center',marginTop:3,marginBottom:4}}>0/5 completed</p>
+                  <div style={{border:'1px solid rgba(196,154,122,0.2)',borderRadius:10,padding:'5px 8px',marginBottom:5}}>
+                    <div style={{display:'flex',gap:8,marginBottom:2}}>
+                      <span style={{fontFamily:'Inter,sans-serif',fontSize:5,fontWeight:700,color:'#614433',opacity:0.4,textTransform:'uppercase',letterSpacing:'0.08em'}}>IN PROGRESS</span>
+                      <span style={{fontFamily:'Inter,sans-serif',fontSize:5,fontWeight:700,color:'#614433',opacity:0.25,textTransform:'uppercase',letterSpacing:'0.08em'}}>COMPLETED</span>
+                    </div>
+                    <p style={{fontFamily:'Georgia,serif',fontSize:7,fontStyle:'italic',color:'#C8849A',opacity:0.8,textAlign:'center'}}>tap the wheel to start</p>
+                  </div>
+                  <div style={{background:'#C49A7A',borderRadius:20,padding:'4px 0',display:'flex',alignItems:'center',justifyContent:'center',opacity:0.5}}>
+                    <span style={{fontFamily:'Inter,sans-serif',fontSize:7,fontWeight:700,color:'white'}}>Close the day.</span>
+                  </div>
+                </div>}
+                {heroPhone===2&&<div key="s2" className="fade-in" style={{position:'relative',height:'100%',overflow:'hidden'}}>
+                  <div style={{position:'absolute',top:0,left:0,right:0,bottom:0,background:'rgba(0,0,0,0.25)'}}/>
+                  <div style={{position:'absolute',bottom:0,left:0,right:0,top:14,background:'#FCE7ED',borderRadius:'16px 16px 0 0',padding:'7px 10px 8px',overflowY:'hidden',boxShadow:'0 -6px 32px rgba(0,0,0,0.18)'}}>
+                    <div style={{width:26,height:3,background:'rgba(0,0,0,0.12)',borderRadius:99,margin:'0 auto 6px'}}/>
+                    <div style={{display:'flex',alignItems:'flex-start',justifyContent:'space-between',marginBottom:1}}>
+                      <div style={{display:'flex',alignItems:'center',gap:5}}>
+                        <span style={{fontSize:13}}>{'✨'}</span>
+                        <span style={{fontFamily:'Georgia,serif',fontSize:13,fontStyle:'italic',color:'#2E1C16'}}>Create</span>
+                      </div>
+                      <div style={{width:15,height:15,borderRadius:99,background:'rgba(0,0,0,0.06)',display:'flex',alignItems:'center',justifyContent:'center'}}>
+                        <span style={{fontSize:7,color:'#614433',opacity:0.5}}>{'✕'}</span>
+                      </div>
+                    </div>
+                    <p style={{fontFamily:'Inter,sans-serif',fontSize:6,color:'#614433',opacity:0.5,marginBottom:6,lineHeight:1.35}}>something you want to create for fun or that builds your future</p>
+                    <p style={{fontFamily:'Inter,sans-serif',fontSize:5,fontWeight:700,color:'#614433',opacity:0.4,textTransform:'uppercase',letterSpacing:'0.12em',marginBottom:5}}>CHOOSE A FOCUS PACK</p>
+                    {[['✏️','My Ideas','0 ideas','Add your own ideas here',false],['🎨','Creative Expression','30 ideas','Your personal everyday creative rituals',true],['💻','Build Something','30 ideas','Code, design, launch, and create things that matter',false],['⚡','Creative Spark','30 ideas','Low stakes experiments and trying new things',false],['📚','Learn a Skill','30 ideas','Drawing, cooking, languages and more',false]].map(function(pack,i){return (
+                      <div key={i} style={{display:'flex',alignItems:'center',gap:6,padding:'4px 6px',background:'white',border:'1px solid '+(pack[4]?'#E890A8':'rgba(232,144,168,0.18)'),borderRadius:9,marginBottom:3,boxShadow:'0 1px 3px rgba(0,0,0,0.03)',animation:pack[4]?'btnTapAnim 2s ease-in-out infinite':'none'}}>
+                        <div style={{width:20,height:20,borderRadius:6,background:'#FCE4EC',display:'flex',alignItems:'center',justifyContent:'center',flexShrink:0}}>
+                          <span style={{fontSize:11}}>{pack[0]}</span>
+                        </div>
+                        <div style={{flex:1,minWidth:0}}>
+                          <p style={{fontFamily:'Georgia,serif',fontSize:8,fontWeight:700,fontStyle:'italic',color:'#2E1C16',lineHeight:1.1}}>{pack[1]}</p>
+                          <p style={{fontFamily:'Inter,sans-serif',fontSize:4.5,color:'#614433',opacity:0.4,marginTop:1}}>{pack[2]}</p>
+                          <p style={{fontFamily:'Inter,sans-serif',fontSize:5,color:'#614433',opacity:0.4,overflow:'hidden',textOverflow:'ellipsis',whiteSpace:'nowrap'}}>{pack[3]}</p>
+                        </div>
+                        <span style={{fontSize:9,color:'#614433',opacity:0.3}}>{'›'}</span>
+                      </div>
+                    );})}
+                    <div style={{background:'#E48BA6',borderRadius:20,padding:'5px 0',display:'flex',alignItems:'center',justifyContent:'center',marginTop:5,marginBottom:4}}>
+                      <span style={{fontFamily:'Inter,sans-serif',fontSize:7,fontWeight:700,color:'white'}}>{'🎲 Shuffle Ideas'}</span>
+                    </div>
+                    <div style={{border:'1px dashed rgba(232,144,168,0.4)',borderRadius:20,padding:'4px 0',display:'flex',alignItems:'center',justifyContent:'center'}}>
+                      <span style={{fontFamily:'Inter,sans-serif',fontSize:6,color:'#614433',opacity:0.45}}>{'+ Add your own idea...'}</span>
+                    </div>
+                  </div>
+                </div>}
+                {heroPhone===3&&<div key="s3" className="fade-in" style={{position:'relative',height:'100%',overflow:'hidden'}}>
+                  <div style={{position:'absolute',top:0,left:0,right:0,bottom:0,background:'rgba(0,0,0,0.22)'}}/>
+                  <div style={{position:'absolute',bottom:0,left:0,right:0,top:18,background:'white',borderRadius:'16px 16px 0 0',padding:'8px 10px 6px',overflowY:'hidden',boxShadow:'0 -6px 32px rgba(0,0,0,0.15)'}}>
+                    <div style={{width:24,height:3,background:'rgba(0,0,0,0.1)',borderRadius:99,margin:'0 auto 6px'}}/>
+                    <div style={{display:'flex',alignItems:'center',gap:5,marginBottom:1}}>
+                      <span style={{fontSize:13}}>{'🎨'}</span>
+                      <span style={{fontFamily:'Georgia,serif',fontSize:12,fontStyle:'italic',color:'#2E1C16'}}>Creative Expression</span>
+                    </div>
+                    <p style={{fontFamily:'Inter,sans-serif',fontSize:6,color:'#614433',opacity:0.4,marginBottom:1}}>Your personal everyday creative rituals</p>
+                    <p style={{fontFamily:'Inter,sans-serif',fontSize:5.5,color:'#614433',opacity:0.3,marginBottom:5}}>30 ideas</p>
+                    <div style={{display:'flex',alignItems:'stretch',gap:0,marginBottom:6,background:'rgba(196,154,122,0.1)',borderRadius:8,padding:2,boxSizing:'border-box'}}>
+                      {['Any','15 min','30 min','1 hr+'].map(function(t,i){return <div key={t} style={{flex:1,display:'flex',alignItems:'center',justifyContent:'center',background:i===0?'#C8849A':'transparent',borderRadius:6,padding:'3px 0',whiteSpace:'nowrap'}}><span style={{fontFamily:'Inter,sans-serif',fontSize:6,fontWeight:i===0?700:500,color:i===0?'white':'#614433',opacity:i===0?1:0.55}}>{t}</span></div>;})}
+                    </div>
+                    <div style={{display:'flex',alignItems:'center',gap:4,marginBottom:7}}>
+                      {['All','Art','Writing','Photo'].map(function(t,i){return <div key={t} style={{display:'flex',alignItems:'center',justifyContent:'center',background:i===0?'#E890A8':'transparent',border:'1px solid '+(i===0?'#E890A8':'rgba(196,154,122,0.35)'),borderRadius:9,padding:'3px 9px',whiteSpace:'nowrap'}}><span style={{fontFamily:'Inter,sans-serif',fontSize:6,fontWeight:i===0?700:500,color:i===0?'white':'#614433',opacity:i===0?1:0.6}}>{t}</span></div>;})}
+                    </div>
+                    {[['✨','Film your day like a short movie',true],['☕','Journal at a cafe with phone down',false],['🎨','Build an art corner in your room',false],['🌙','Do a Pinterest DIY craft',false]].map(function(row,i){return <div key={i} style={{display:'flex',alignItems:'center',gap:6,padding:'5px 4px',borderBottom:'1px solid rgba(196,154,122,0.1)',borderRadius:6,animation:i===0?'rowTapAnim 2s ease-in-out infinite':'none'}}><div style={{width:22,height:22,borderRadius:99,background:i===0?'#FCE4EC':'rgba(196,154,122,0.08)',display:'flex',alignItems:'center',justifyContent:'center',flexShrink:0}}><span style={{fontSize:11}}>{row[0]}</span></div><div style={{flex:1}}><p style={{fontFamily:'Inter,sans-serif',fontSize:7,fontWeight:600,color:'#2E1C16'}}>{row[1]}</p><div style={{display:'flex',gap:3,marginTop:2}}><span style={{fontFamily:'Inter,sans-serif',fontSize:5,color:'#614433',border:'1px solid rgba(196,154,122,0.3)',borderRadius:20,padding:'1px 5px',opacity:0.6}}>Creative</span><span style={{fontFamily:'Inter,sans-serif',fontSize:5,color:'#614433',border:'1px solid rgba(196,154,122,0.3)',borderRadius:20,padding:'1px 5px',opacity:0.6}}>Anywhere</span></div></div></div>;})}
+                  </div>
+                </div>}
+                {heroPhone===4&&<div key="s4" className="fade-in" style={{position:'relative',height:'100%',overflow:'hidden'}}>
+                  <div style={{padding:'8px 10px 6px',display:'flex',flexDirection:'column',alignItems:'center',opacity:0.08,pointerEvents:'none'}}>
+                    <svg width="168" height="168" viewBox="0 0 190 190">
+                      {slices.map(function(s,i){
+                        var a=i*72,ae=(i+1)*72,r=86,ir=32,cx=95,cy=95;
+                        var rd1=(a-90)*Math.PI/180,rd2=(ae-90)*Math.PI/180;
+                        var os={x:cx+r*Math.cos(rd1),y:cy+r*Math.sin(rd1)},oe={x:cx+r*Math.cos(rd2),y:cy+r*Math.sin(rd2)};
+                        var ie={x:cx+ir*Math.cos(rd2),y:cy+ir*Math.sin(rd2)},is2={x:cx+ir*Math.cos(rd1),y:cy+ir*Math.sin(rd1)};
+                        var path='M '+os.x.toFixed(1)+' '+os.y.toFixed(1)+' A '+r+' '+r+' 0 0 1 '+oe.x.toFixed(1)+' '+oe.y.toFixed(1)+' L '+ie.x.toFixed(1)+' '+ie.y.toFixed(1)+' A '+ir+' '+ir+' 0 0 0 '+is2.x.toFixed(1)+' '+is2.y.toFixed(1)+' Z';
+                        return <g key={i}><path d={path} fill={s.color} fillOpacity={0.8} stroke={s.border} strokeWidth="1.5"/></g>;
+                      })}
+                      <circle cx="95" cy="95" r="30" fill="white"/>
+                    </svg>
+                  </div>
+                  <div style={{position:'absolute',top:0,left:0,right:0,bottom:0,background:'rgba(0,0,0,0.2)'}}/>
+                  <div className="sheet-up" style={{position:'absolute',bottom:0,left:0,right:0,top:24,background:'white',borderRadius:'16px 16px 0 0',padding:'8px 10px 10px',overflowY:'hidden'}}>
+                    <div style={{width:28,height:3,background:'rgba(0,0,0,0.1)',borderRadius:99,margin:'0 auto 6px'}}/>
+                    <div style={{display:'flex',alignItems:'center',justifyContent:'space-between',marginBottom:6}}>
+                      <div style={{display:'flex',alignItems:'center',gap:4}}>
+                        <span style={{fontFamily:'Inter,sans-serif',fontSize:7,color:'#614433',opacity:0.4}}>{'\u2039 back'}</span>
+                      </div>
+                      <div style={{width:14,height:14,borderRadius:99,background:'rgba(196,154,122,0.1)',display:'flex',alignItems:'center',justifyContent:'center'}}>
+                        <span style={{fontSize:7,color:'#614433',opacity:0.4}}>{'\u00D7'}</span>
+                      </div>
+                    </div>
+                    <div style={{display:'flex',alignItems:'center',gap:4,marginBottom:2}}>
+                      <span style={{fontSize:9}}>{'\uD83C\uDFA8'}</span>
+                      <span style={{fontFamily:'Inter,sans-serif',fontSize:7,color:'#614433',opacity:0.45}}>Creative Expression</span>
+                    </div>
+                    <p style={{fontFamily:'Georgia,serif',fontSize:12,color:'#2E1C16',fontStyle:'italic',lineHeight:1.3,marginBottom:2}}>Film your day like a short movie</p>
+                    <p style={{fontFamily:'Georgia,serif',fontSize:8,color:'#614433',fontStyle:'italic',opacity:0.45,marginBottom:5}}>Small but meaningful.</p>
+                    <div style={{display:'flex',gap:4,marginBottom:8}}>
+                      {[['1 hr','#FCE4EC','#E890A8'],['Creative','rgba(196,154,122,0.12)','#C49A7A'],['Anywhere','rgba(196,154,122,0.12)','#C49A7A']].map(function(t){return <span key={t[0]} style={{fontFamily:'Inter,sans-serif',fontSize:6.5,fontWeight:600,color:t[2],background:t[1],padding:'2px 8px',borderRadius:20}}>{t[0]}</span>;})}
+                    </div>
+                    <div style={{background:'#FAF6F2',borderRadius:10,padding:'6px 8px',marginBottom:6}}>
+                      <p style={{fontFamily:'Inter,sans-serif',fontSize:5,fontWeight:700,color:'#614433',opacity:0.35,textTransform:'uppercase',letterSpacing:'0.1em',marginBottom:3}}>WHY YOU WILL LOVE IT</p>
+                      <p style={{fontFamily:'Inter,sans-serif',fontSize:7,color:'#614433',opacity:0.65,lineHeight:1.5}}>Making something reminds you that you are capable of more than you think.</p>
+                    </div>
+                    <div style={{background:'#FAF6F2',borderRadius:10,padding:'6px 8px',marginBottom:8}}>
+                      <p style={{fontFamily:'Inter,sans-serif',fontSize:5,fontWeight:700,color:'#614433',opacity:0.35,textTransform:'uppercase',letterSpacing:'0.1em',marginBottom:4}}>HOW TO DO IT</p>
+                      {[['Set up your space so it feels inviting.'],['Give yourself a soft time limit.'],['Share it or keep it just for you.']].map(function(step,i){return <div key={i} style={{display:'flex',alignItems:'flex-start',gap:5,marginBottom:3}}><div style={{width:12,height:12,borderRadius:99,background:'#E890A8',display:'flex',alignItems:'center',justifyContent:'center',flexShrink:0,marginTop:1}}><span style={{fontFamily:'Inter,sans-serif',fontSize:6,fontWeight:700,color:'white'}}>{i+1}</span></div><p style={{fontFamily:'Inter,sans-serif',fontSize:6.5,color:'#614433',opacity:0.6,lineHeight:1.4}}>{step[0]}</p></div>;})}
+                    </div>
+                    <div style={{background:'#E890A8',borderRadius:20,padding:'4px 0',display:'flex',alignItems:'center',justifyContent:'center',marginBottom:4,animation:'btnTapAnim 2s ease-in-out infinite'}}>
+                      <span style={{fontFamily:'Inter,sans-serif',fontSize:7,fontWeight:700,color:'white'}}>{'\u2713 Add to my day'}</span>
+                    </div>
+                    <div style={{display:'flex',gap:4}}>
+                      <div style={{flex:1,background:'white',border:'1px solid rgba(196,154,122,0.2)',borderRadius:20,padding:'3px 0',display:'flex',alignItems:'center',justifyContent:'center'}}>
+                        <span style={{fontFamily:'Inter,sans-serif',fontSize:5.5,color:'#614433',opacity:0.55}}>{'\uD83D\uDCBE Save idea'}</span>
+                      </div>
+                      <div style={{flex:1,background:'white',border:'1px solid rgba(196,154,122,0.2)',borderRadius:20,padding:'3px 0',display:'flex',alignItems:'center',justifyContent:'center'}}>
+                        <span style={{fontFamily:'Inter,sans-serif',fontSize:5.5,color:'#614433',opacity:0.55}}>{'\uD83C\uDFB2 Try another'}</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>}
+                {heroPhone===5&&<div key="s5" className="fade-in" style={{height:'100%',overflowY:'hidden',background:'#FAF6F2',padding:'5px 10px 6px',boxSizing:'border-box'}}>
+                  <div style={{display:'flex',justifyContent:'center',marginBottom:2}}>
+                    <svg width="130" height="130" viewBox="0 0 190 190">
+                      {slices.map(function(s,i){
+                        var a=i*72,ae=(i+1)*72,r=86,ir=32,cx=95,cy=95;
+                        var rd1=(a-90)*Math.PI/180,rd2=(ae-90)*Math.PI/180;
+                        var os={x:cx+r*Math.cos(rd1),y:cy+r*Math.sin(rd1)},oe={x:cx+r*Math.cos(rd2),y:cy+r*Math.sin(rd2)};
+                        var ie={x:cx+ir*Math.cos(rd2),y:cy+ir*Math.sin(rd2)},is2={x:cx+ir*Math.cos(rd1),y:cy+ir*Math.sin(rd1)};
+                        var path='M '+os.x.toFixed(1)+' '+os.y.toFixed(1)+' A '+r+' '+r+' 0 0 1 '+oe.x.toFixed(1)+' '+oe.y.toFixed(1)+' L '+ie.x.toFixed(1)+' '+ie.y.toFixed(1)+' A '+ir+' '+ir+' 0 0 0 '+is2.x.toFixed(1)+' '+is2.y.toFixed(1)+' Z';
+                        var mid=(a+ae)/2;var midRd=(mid-90)*Math.PI/180;var lr=(r+ir)/2;
+                        var lx=cx+lr*Math.cos(midRd),ly=cy+lr*Math.sin(midRd);
+                        return <g key={i}>
+                          <path d={path} fill={s.color} fillOpacity={1} stroke={s.border} strokeWidth={2}/>
+                          <text x={lx.toFixed(1)} y={(ly-2).toFixed(1)} textAnchor="middle" style={{fontSize:'12px'}}>{s.emoji}</text>
+                          <text x={lx.toFixed(1)} y={(ly+9).toFixed(1)} textAnchor="middle" fill={s.border} style={{fontSize:'9px',fontWeight:700}}>{'\u2713'}</text>
+                        </g>;
+                      })}
+                      <circle cx="95" cy="95" r="30" fill="white" stroke="rgba(196,154,122,0.2)" strokeWidth="1.5"/>
+                      <text x="95" y="92" textAnchor="middle" fontSize="7" fill="#614433" fontFamily="Georgia,serif" fontStyle="italic" opacity="0.45">flow</text>
+                      <text x="95" y="102" textAnchor="middle" fontSize="7" fill="#614433" fontFamily="Georgia,serif" fontStyle="italic" opacity="0.45">daily</text>
+                      <circle cx="130" cy="47" r="14" fill="none" stroke="#E890A8" strokeWidth="2" style={{transformOrigin:'130px 47px',animation:'tapRing 1.2s ease-out infinite'}}/>
+                    </svg>
+                  </div>
+                  <div style={{display:'flex',alignItems:'center',gap:0,padding:'0 4px',marginBottom:2}}>
+                    {[{e:'\u2728',l:'Create',c:'#E890A8'},{e:'\uD83D\uDCDA',l:'Mindset',c:'#E8BA78'},{e:'\uD83D\uDC9B',l:'Connect',c:'#C8A8E8'},{e:'\uD83C\uDFC3',l:'Move',c:'#81C784'},{e:'\uD83C\uDF3F',l:'Reset',c:'#FFAB91'}].map(function(t,i){return [
+                      <div key={t.l} style={{display:'flex',flexDirection:'column',alignItems:'center'}}>
+                        <div style={{width:13,height:13,borderRadius:99,display:'flex',alignItems:'center',justifyContent:'center',animation:i===0?'stepperFill 2s ease-in-out infinite':'none',background:i===0?'rgba(232,144,168,0.2)':t.c,border:'1.5px solid '+t.c}}>
+                          {i===0?<span style={{fontSize:7,opacity:1}}>{'\u2728'}</span>:<span style={{fontSize:7,color:'white',fontWeight:700}}>{'\u2713'}</span>}
+                        </div>
+                        <span style={{fontFamily:'Inter,sans-serif',fontSize:4.5,color:t.c,fontWeight:600,marginTop:1}}>{t.l}</span>
+                      </div>,
+                      i<4&&<div key={'l'+i} style={{flex:1,height:1.5,background:i===0?'rgba(196,154,122,0.2)':t.c,marginBottom:12}}/>
+                    ];})}
+                  </div>
+                  <div style={{position:'relative',textAlign:'center',height:12,marginBottom:3}}>
+                    <p style={{fontFamily:'Inter,sans-serif',fontSize:5.5,color:'#614433',opacity:0.38,position:'absolute',width:'100%',animation:'count4out 2s ease-in-out infinite'}}>4/5 completed</p>
+                    <p style={{fontFamily:'Inter,sans-serif',fontSize:5.5,color:'#614433',opacity:0.38,position:'absolute',width:'100%',animation:'count5in 2s ease-in-out infinite'}}>5/5 completed</p>
+                  </div>
+                  <p style={{fontFamily:'Inter,sans-serif',fontSize:5.5,fontWeight:700,color:'#614433',textTransform:'uppercase',letterSpacing:'0.1em',marginBottom:2,animation:'inProgLabelOut 2s ease-in-out infinite'}}>IN PROGRESS</p>
+                  <div style={{animation:'inProgOut 2s ease-in-out infinite',overflow:'hidden'}}>
+                    <div style={{display:'flex',alignItems:'center',gap:5,padding:'5px 8px',background:'white',borderRadius:10,border:'1.5px solid #E890A8',marginBottom:4,boxShadow:'0 2px 8px rgba(232,144,168,0.25)'}}>
+                      <span style={{fontSize:10}}>{'\u2728'}</span>
+                      <div style={{flex:1}}>
+                        <p style={{fontFamily:'Inter,sans-serif',fontSize:5,fontWeight:700,color:'#E890A8',textTransform:'uppercase',letterSpacing:'0.08em',marginBottom:1}}>Create</p>
+                        <p style={{fontFamily:'Inter,sans-serif',fontSize:7,color:'#2E1C16'}}>Film your day like a short movie</p>
+                      </div>
+                      <div style={{background:'#E890A8',borderRadius:20,padding:'3px 8px',flexShrink:0,animation:'tapBtnBounce 2s ease-in-out infinite'}}>
+                        <span style={{fontFamily:'Inter,sans-serif',fontSize:5.5,fontWeight:700,color:'white'}}>{'\u2713 tap'}</span>
+                      </div>
+                    </div>
+                  </div>
+                  <p style={{fontFamily:'Inter,sans-serif',fontSize:5.5,fontWeight:700,color:'#614433',opacity:0.3,textTransform:'uppercase',letterSpacing:'0.1em',marginBottom:2}}>COMPLETED</p>
+                  {[['\uD83D\uDCDA','Mindset','Write 3 things you are proud of','#FDEBD0','#E8BA78'],['\uD83D\uDC9B','Connect','Voice note to a friend you miss','#EDE6F6','#C8A8E8'],['\uD83C\uDFC3','Move','Walk outside for 20 minutes','#E8F5E9','#81C784'],['\uD83C\uDF3F','Reset','5-min breathwork session','#FFF3EE','#FFAB91']].map(function(row,i){return <div key={i} style={{display:'flex',alignItems:'center',gap:5,padding:'3px 7px',background:row[3],borderRadius:8,marginBottom:2}}><span style={{fontSize:8}}>{row[0]}</span><p style={{fontFamily:'Inter,sans-serif',fontSize:6.5,color:'#2E1C16',textDecoration:'line-through',opacity:0.4,flex:1}}>{row[2]}</p><span style={{fontSize:8,color:row[4]}}>{'\u2713'}</span></div>;})}
+                  <div style={{display:'flex',alignItems:'center',gap:5,padding:'3px 7px',background:'#FCE4EC',borderRadius:8,animation:'resetRowIn 2s ease-in-out infinite'}}>
+                    <span style={{fontSize:8}}>{'\u2728'}</span>
+                    <p style={{fontFamily:'Inter,sans-serif',fontSize:6.5,color:'#2E1C16',textDecoration:'line-through',opacity:0.4,flex:1}}>Film your day like a short movie</p>
+                    <span style={{fontSize:8,color:'#E890A8'}}>{'\u2713'}</span>
+                  </div>
+                </div>}
+                {heroPhone===6&&<div key="s6" className="fade-in" style={{height:'100%',overflowY:'hidden',background:'#FAF6F2',padding:'6px 10px 6px',boxSizing:'border-box'}}>
+                  <div style={{background:'#C49A7A',borderRadius:20,padding:'4px 0',display:'flex',alignItems:'center',justifyContent:'center',marginBottom:6,opacity:0.45}}>
+                    <span style={{fontFamily:'Inter,sans-serif',fontSize:7,fontWeight:700,color:'white'}}>Close the day.</span>
+                  </div>
+                  <div style={{display:'flex',alignItems:'baseline',gap:5,marginBottom:6}}>
+                    <p style={{fontFamily:'Georgia,serif',fontSize:12,color:'#2E1C16',fontStyle:'italic'}}>how did today feel?</p>
+                    <span style={{fontFamily:'Inter,sans-serif',fontSize:6.5,color:'#614433',opacity:0.35}}>(optional)</span>
+                  </div>
+                  <div style={{background:'white',border:'1px solid rgba(196,154,122,0.22)',borderRadius:14,padding:'8px 10px'}}>
+                    <p style={{fontFamily:'Inter,sans-serif',fontSize:7.5,fontWeight:600,color:'#2E1C16',marginBottom:5}}>did today feel balanced?</p>
+                    <div style={{display:'flex',gap:4,marginBottom:7}}>
+                      {[['\uD83D\uDE15','not quite'],['\uD83D\uDE0A','getting there'],['\u2728','yes, it did']].map(function(opt,i){return <div key={i} style={{flex:1,background:i===2?'#FAF6F2':'transparent',border:'1px solid rgba(196,154,122,'+(i===2?'0.3':'0.15')+')',borderRadius:8,padding:'5px 4px',textAlign:'center'}}><p style={{fontSize:11,marginBottom:1}}>{opt[0]}</p><p style={{fontFamily:'Inter,sans-serif',fontSize:5.5,color:'#614433',opacity:i===2?0.7:0.4}}>{opt[1]}</p></div>;})}
+                    </div>
+                    <div style={{display:'flex',alignItems:'center',justifyContent:'space-between',marginBottom:4}}>
+                      <p style={{fontFamily:'Inter,sans-serif',fontSize:7,fontWeight:600,color:'#2E1C16'}}>rate your flow state</p>
+                      <span style={{fontSize:10}}>{'\uD83C\uDFAF'}</span>
+                    </div>
+                    <div style={{position:'relative',height:10,marginBottom:2}}>
+                      <div style={{position:'absolute',top:'50%',left:0,right:0,height:4,borderRadius:99,background:'linear-gradient(90deg,rgba(196,154,122,0.2),rgba(196,154,122,0.15))',transform:'translateY(-50%)'}}/>
+                      <div style={{position:'absolute',top:'50%',left:0,width:'80%',height:4,borderRadius:99,background:'linear-gradient(90deg,#F0B8C8,#C49A7A)',transform:'translateY(-50%)',animation:'sliderFillAnim 1.1s ease-out forwards'}}/>
+                      <div style={{position:'absolute',top:'50%',left:'80%',width:10,height:10,borderRadius:99,background:'white',border:'2px solid #C49A7A',transform:'translate(-50%,-50%)',boxShadow:'0 1px 4px rgba(0,0,0,0.2)',animation:'sliderThumbAnim 1.1s ease-out forwards'}}/>
+                    </div>
+                    <div style={{display:'flex',justifyContent:'space-between',marginBottom:5}}>
+                      <span style={{fontFamily:'Inter,sans-serif',fontSize:5.5,color:'#614433',opacity:0.35}}>distracted</span>
+                      <span style={{fontFamily:'Inter,sans-serif',fontSize:5.5,fontWeight:700,color:'#C49A7A',whiteSpace:'nowrap'}}>mostly focused 8/10</span>
+                      <span style={{fontFamily:'Inter,sans-serif',fontSize:5.5,color:'#614433',opacity:0.35}}>in flow</span>
+                    </div>
+                    <p style={{fontFamily:'Inter,sans-serif',fontSize:6.5,color:'#614433',opacity:0.4,marginBottom:4}}>how are you feeling?</p>
+                    <div style={{display:'flex',gap:3,flexWrap:'wrap',marginBottom:6}}>
+                      {['\uD83D\uDE4F calm','\uD83D\uDCAA proud','\uD83C\uDF3F present','\uD83C\uDFAF focused','\uD83D\uDE4F grateful','\uD83C\uDFA8 creative','\u2728 peaceful'].map(function(chip,ci){return <span key={chip} style={{fontFamily:'Inter,sans-serif',fontSize:5.5,color:'#614433',border:'1px solid rgba(196,154,122,0.3)',borderRadius:20,padding:'2px 6px',opacity:0.7,animation:ci===0?'chipTap1 1s ease-out 0.35s both':ci===1?'chipTap2 1s ease-out 0.7s both':'none'}}>{chip}</span>;})}
+                    </div>
+                    <div style={{background:'#FAF6F2',borderRadius:8,padding:'4px 7px',marginBottom:5}}>
+                      <p style={{fontFamily:'Georgia,serif',fontSize:7,color:'#614433',opacity:0.35,fontStyle:'italic'}}>today I felt...</p>
+                    </div>
+                    <div style={{background:'#C49A7A',borderRadius:20,padding:'4px 0',display:'flex',alignItems:'center',justifyContent:'center'}}>
+                      <span style={{fontFamily:'Inter,sans-serif',fontSize:7,fontWeight:700,color:'white'}}>Save reflection & close the day.</span>
+                    </div>
+                  </div>
+                </div>}
+                {heroPhone===8&&<div key="s8" className="fade-in" style={{height:'100%',overflow:'hidden',background:'#FAF6F2'}}>
+                  <div style={{padding:'10px 10px 8px'}}>
+                    <p style={{fontFamily:'Georgia,serif',fontSize:14,color:'#2E1C16',fontStyle:'italic',marginBottom:6}}>Your Days.</p>
+                    <div style={{background:'white',border:'1px solid rgba(196,154,122,0.2)',borderRadius:14,padding:'8px 10px',marginBottom:6}}>
+                      <div style={{display:'flex',alignItems:'center',justifyContent:'space-between',marginBottom:5}}>
+                        <p style={{fontFamily:'Georgia,serif',fontSize:9,color:'#2E1C16',fontStyle:'italic'}}>Today, Jul 7</p>
+                        <div style={{display:'flex',alignItems:'center',gap:6}}>
+                          <p style={{fontFamily:'Inter,sans-serif',fontSize:6,fontWeight:600,color:'#C49A7A'}}>{'\uD83D\uDD25 11 day streak'}</p>
+                          <div style={{background:'#FAF6F2',border:'1px solid rgba(196,154,122,0.25)',borderRadius:20,padding:'2px 8px',display:'flex',alignItems:'center',gap:3,animation:'shareBtnTap 2s ease-in-out infinite'}}>
+                            <span style={{fontSize:8}}>{'\uD83D\uDCE4'}</span>
+                            <span style={{fontFamily:'Inter,sans-serif',fontSize:6,fontWeight:600,color:'#C49A7A'}}>Share</span>
+                          </div>
+                        </div>
+                      </div>
+                      {[['\u2728','Film your day like a short movie'],['\uD83D\uDCDA','Write 3 things you are proud of'],['\uD83D\uDC9B','Voice note to a friend you miss'],['\uD83C\uDFC3','Walk outside for 20 minutes'],['\uD83C\uDF3F','5-min breathwork session']].map(function(row,i){return <div key={i} style={{display:'flex',alignItems:'flex-start',gap:5,marginBottom:4}}><span style={{fontSize:9,flexShrink:0,marginTop:1}}>{row[0]}</span><p style={{fontFamily:'Inter,sans-serif',fontSize:7.5,color:'#2E1C16',lineHeight:1.2,textDecoration:'line-through',opacity:0.55}}>{row[1]}</p></div>;})}
+                      <div style={{display:'flex',alignItems:'center',gap:3,marginTop:4,paddingTop:5,borderTop:'1px solid rgba(196,154,122,0.1)'}}>
+                        <span style={{fontFamily:'Georgia,serif',fontSize:7,color:'#614433',fontStyle:'italic',opacity:0.45,flex:1}}>"felt really alive today..."</span>
+                        <span style={{fontFamily:'Inter,sans-serif',fontSize:6,color:'#C49A7A',opacity:0.7}}>{'\uD83D\uDD25 11d'}</span>
+                      </div>
+                    </div>
+                    <div style={{background:'white',border:'1px solid rgba(196,154,122,0.12)',borderRadius:14,padding:'8px 10px',opacity:0.5}}>
+                      <div style={{display:'flex',alignItems:'center',justifyContent:'space-between',marginBottom:3}}>
+                        <p style={{fontFamily:'Georgia,serif',fontSize:9,color:'#2E1C16',fontStyle:'italic'}}>Yesterday, Jul 6</p>
+                        <p style={{fontFamily:'Inter,sans-serif',fontSize:6,fontWeight:600,color:'#C49A7A'}}>5/5</p>
+                      </div>
+                      <div style={{display:'flex',gap:5}}>
+                        {['\u2728','\uD83D\uDCDA','\uD83D\uDC9B','\uD83C\uDFC3','\uD83C\uDF3F'].map(function(e,i){return <span key={i} style={{fontSize:10}}>{e}</span>;})}
+                      </div>
+                    </div>
+                  </div>
+                </div>}
+                {heroPhone===7&&<div key="s7" className="fade-in" style={{height:'100%',overflow:'hidden',background:'#FAF6F2',padding:'12px 12px',boxSizing:'border-box',display:'flex',flexDirection:'column',alignItems:'center'}}>
+                  <p style={{fontFamily:'Inter,sans-serif',fontSize:6,fontWeight:700,color:'#C49A7A',opacity:0.75,textTransform:'uppercase',letterSpacing:'0.14em',marginBottom:2}}>YOUR FLOW</p>
+                  <p style={{fontFamily:'Georgia,serif',fontSize:13,fontStyle:'italic',color:'#2E1C16',marginBottom:1,textAlign:'center'}}>look how far you have come</p>
+                  <p style={{fontFamily:'Inter,sans-serif',fontSize:6.5,color:'#614433',opacity:0.45,marginBottom:10,textAlign:'center'}}>every area, a little every day</p>
+                  <div style={{position:'relative',width:158,height:158,marginBottom:10}}>
+                    <svg width="158" height="158" viewBox="0 0 190 190" style={{display:'block'}}>
+                      {slices.map(function(s,i){
+                        var a=i*72,ae=(i+1)*72,r=86,ir=40,cx=95,cy=95;
+                        var rd1=(a-90)*Math.PI/180,rd2=(ae-90)*Math.PI/180;
+                        var os={x:cx+r*Math.cos(rd1),y:cy+r*Math.sin(rd1)},oe={x:cx+r*Math.cos(rd2),y:cy+r*Math.sin(rd2)};
+                        var ie={x:cx+ir*Math.cos(rd2),y:cy+ir*Math.sin(rd2)},is2={x:cx+ir*Math.cos(rd1),y:cy+ir*Math.sin(rd1)};
+                        var path='M '+os.x.toFixed(1)+' '+os.y.toFixed(1)+' A '+r+' '+r+' 0 0 1 '+oe.x.toFixed(1)+' '+oe.y.toFixed(1)+' L '+ie.x.toFixed(1)+' '+ie.y.toFixed(1)+' A '+ir+' '+ir+' 0 0 0 '+is2.x.toFixed(1)+' '+is2.y.toFixed(1)+' Z';
+                        var mid=(a+ae)/2;var midRd=(mid-90)*Math.PI/180;var lr=(r+ir)/2+2;
+                        var lx=cx+lr*Math.cos(midRd),ly=cy+lr*Math.sin(midRd);
+                        return <g key={i}>
+                          <path d={path} fill={s.color} stroke="white" strokeWidth="2.5"/>
+                          <text x={lx.toFixed(1)} y={(ly+4).toFixed(1)} textAnchor="middle" style={{fontSize:'13px'}}>{s.emoji}</text>
+                        </g>;
+                      })}
+                      <circle cx="95" cy="95" r="38" fill="white" stroke="rgba(196,154,122,0.2)" strokeWidth="1.5"/>
+                      <text x="95" y="90" textAnchor="middle" fontSize="15" fontFamily="Georgia,serif" fontWeight="700" fill="#2E1C16">{'🔥 11'}</text>
+                      <text x="95" y="103" textAnchor="middle" fontSize="6" fontFamily="Inter,sans-serif" fill="#614433" opacity="0.5">day streak</text>
+                    </svg>
+                  </div>
+                  <div style={{display:'flex',gap:6,width:'100%',padding:'0 2px',boxSizing:'border-box'}}>
+                    {[['23','ideas done'],['5/5','areas active'],['76%','balance']].map(function(st,i){return <div key={i} style={{flex:1,background:'white',border:'1px solid rgba(196,154,122,0.15)',borderRadius:10,padding:'6px 0',textAlign:'center'}}><p style={{fontFamily:'Georgia,serif',fontSize:13,fontWeight:700,color:'#2E1C16'}}>{st[0]}</p><p style={{fontFamily:'Inter,sans-serif',fontSize:5,color:'#614433',opacity:0.45,marginTop:1}}>{st[1]}</p></div>;})}
+                  </div>
+                  <p style={{fontFamily:'Georgia,serif',fontSize:9,fontStyle:'italic',color:'#614433',opacity:0.55,marginTop:12}}>one wheel at a time.</p>
+                </div>}
+                {heroPhone===9&&<div key="s9" className="fade-in" style={{position:'relative',height:'100%',overflow:'hidden'}}>
+                  <div style={{padding:'10px 10px 8px',opacity:0.4}}>
+                    <p style={{fontFamily:'Georgia,serif',fontSize:14,color:'#2E1C16',fontStyle:'italic',marginBottom:6}}>Your Days.</p>
+                    <div style={{background:'white',border:'1px solid rgba(196,154,122,0.2)',borderRadius:14,padding:10}}>
+                      <div style={{display:'flex',alignItems:'center',justifyContent:'space-between',marginBottom:6}}>
+                        <p style={{fontFamily:'Georgia,serif',fontSize:9,color:'#2E1C16',fontStyle:'italic'}}>Today, Jul 7</p>
+                        <p style={{fontFamily:'Inter,sans-serif',fontSize:6.5,fontWeight:600,color:'#C49A7A'}}>{'\uD83D\uDD25 11 day streak'}</p>
+                      </div>
+                      {[['\u2728','Create','Film your day'],['\uD83D\uDCDA','Mindset','Write 3 proud things'],['\uD83D\uDC9B','Connect','Voice note to friend'],['\uD83C\uDFC3','Move','Walk outside'],['\uD83C\uDF3F','Reset','5-min breathwork']].map(function(row,i){return <div key={i} style={{display:'flex',alignItems:'flex-start',gap:5,marginBottom:5}}><span style={{fontSize:9,flexShrink:0,marginTop:1}}>{row[0]}</span><div><p style={{fontFamily:'Inter,sans-serif',fontSize:5.5,fontWeight:700,textTransform:'uppercase',letterSpacing:'0.08em',color:'#614433',opacity:0.3}}>{row[1]}</p><p style={{fontFamily:'Inter,sans-serif',fontSize:8.5,color:'#2E1C16',lineHeight:1.2}}>{row[2]}</p></div></div>;})}
+                    </div>
+                  </div>
+                  <div style={{position:'absolute',top:0,left:0,right:0,bottom:0,background:'rgba(0,0,0,0.38)',display:'flex',flexDirection:'column',justifyContent:'flex-end',padding:8}}>
+                    <div style={{background:'linear-gradient(160deg,#FCE4EC 0%,#FAF6F2 40%,#EDE6F6 70%,#E0F2E9 100%)',borderRadius:16,padding:'10px 10px 8px',boxShadow:'0 -8px 32px rgba(0,0,0,0.22)'}}>
+                      <p style={{fontFamily:'Georgia,serif',fontSize:9,color:'#2E1C16',fontStyle:'italic',marginBottom:4}}>Today, Jul 7</p>
+                      <div style={{marginBottom:4}}>
+                        {[['\u2728','Film your day'],['\uD83D\uDCDA','Write 3 proud things'],['\uD83D\uDC9B','Voice note to friend']].map(function(row,i){return <div key={i} style={{display:'flex',alignItems:'flex-start',gap:3,marginBottom:2}}><span style={{fontSize:7}}>{row[0]}</span><p style={{fontFamily:'Inter,sans-serif',fontSize:6,color:'#2E1C16'}}>{row[1]}</p></div>;})}
+                        <p style={{fontFamily:'Inter,sans-serif',fontSize:5.5,color:'#614433',opacity:0.4,marginTop:1}}>+2 more</p>
+                      </div>
+                      <p style={{fontFamily:'Georgia,serif',fontSize:6.5,color:'#614433',opacity:0.5,fontStyle:'italic',marginBottom:5}}>"I painted for the first time in years..."</p>
+                      <div style={{display:'flex',alignItems:'center',justifyContent:'space-between',paddingTop:4,marginBottom:6,borderTop:'1px solid rgba(0,0,0,0.05)'}}>
+                        <span style={{fontFamily:'Inter,sans-serif',fontSize:5,color:'#614433',opacity:0.3,textTransform:'uppercase',letterSpacing:'0.1em'}}>Passion Flow Daily</span>
+                        <span style={{fontFamily:'Georgia,serif',fontSize:5.5,color:'#C49A7A',fontStyle:'italic',opacity:0.65}}>passionflowdaily.com</span>
+                      </div>
+                      <div style={{display:'flex',gap:4}}>
+                        {[['\uD83D\uDCE5','Save Image'],['\uD83D\uDCAC','iMessage'],['\uD83D\uDCE4','More']].map(function(btn,bi){return <div key={btn[1]} style={{flex:1,borderRadius:8,border:'1px solid rgba(0,0,0,0.06)',background:'white',padding:'5px 0',textAlign:'center',animation:bi===0?'btnTapAnim 2s ease-in-out infinite':'none'}}><p style={{fontSize:10,marginBottom:1}}>{btn[0]}</p><p style={{fontFamily:'Inter,sans-serif',fontSize:5.5,color:'#614433',fontWeight:600}}>{btn[1]}</p></div>;})}
+                      </div>
+                    </div>
+                  </div>
+                </div>}
+              </div>
+              <div style={{position:'relative',padding:'6px 8px 7px',background:'#FAF6F2'}}>
+                <div style={{position:'absolute',left:'50%',transform:'translateX(-50%)',top:-4,display:'flex',flexDirection:'column',alignItems:'center',zIndex:10}}>
+                  <div style={{width:30,height:30,borderRadius:99,background:'white',display:'flex',alignItems:'center',justifyContent:'center',boxShadow:heroPhone<=6?'0 3px 14px rgba(232,144,168,0.5)':'0 2px 10px rgba(0,0,0,0.12)'}}>
+                    <span style={{fontSize:14}}>{'\uD83C\uDFAF'}</span>
+                  </div>
+                  <span style={{fontFamily:'Inter,sans-serif',fontSize:5,fontWeight:700,color:heroPhone<=6?'#E890A8':'rgba(97,68,51,0.38)',marginTop:2}}>Spin</span>
+                </div>
+                <div style={{display:'flex',alignItems:'center',justifyContent:'space-around',padding:'4px 6px 5px',borderRadius:20,background:'rgba(250,246,242,0.97)',boxShadow:'0 2px 14px rgba(0,0,0,0.08)',border:'1px solid rgba(196,154,122,0.14)'}}>
+                  {[{e:'\uD83D\uDCDD',l:'Your Days',on:heroPhone>=7},{e:'\uD83D\uDD16',l:'Saved',on:false},{sp:true},{e:'\uD83D\uDCCA',l:'Progress',on:false},{e:'\u2699\uFE0F',l:'Settings',on:false}].map(function(t,i){if(t.sp) return <div key="sp" style={{width:32}}/>;return <div key={t.l} style={{display:'flex',flexDirection:'column',alignItems:'center',padding:'2px 3px',borderRadius:8,background:t.on?'rgba(196,154,122,0.12)':'transparent'}}><span style={{fontSize:12,opacity:t.on?1:0.38,lineHeight:'1.2'}}>{t.e}</span><span style={{fontFamily:'Inter,sans-serif',fontSize:5,fontWeight:t.on?700:500,color:t.on?'#C49A7A':'rgba(97,68,51,0.38)',marginTop:1}}>{t.l}</span></div>;})}
+                </div>
+              </div>
+            </div>
+          </div>
+
+      </div>;
+    }
+    ReactDOM.createRoot(document.getElementById('root')).render(<PhoneReel/>);
+  </script>
+</body>
+</html>
