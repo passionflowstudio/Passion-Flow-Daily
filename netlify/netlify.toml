@@ -1,0 +1,50 @@
+# Tells Netlify to treat netlify/functions/*.js as serverless functions.
+# Without the explicit `functions` path, a drag-and-drop deploy uploads them as plain
+# static files and the /.netlify/functions/* routes return 404 — which is exactly what
+# was happening (the Stripe webhook endpoint was unreachable).
+[build]
+  publish = "."
+  functions = "netlify/functions"
+
+[functions]
+  node_bundler = "esbuild"
+
+# Don't serve the raw function source over HTTP. The files contain no secrets (those live
+# in environment variables), but there's no reason to publish the source publicly.
+[[redirects]]
+  from = "/netlify/*"
+  to = "/"
+  status = 404
+  force = true
+
+[[redirects]]
+  from = "/privacy"
+  to = "/privacy.html"
+  status = 200
+
+[[redirects]]
+  from = "/terms"
+  to = "/terms.html"
+  status = 200
+
+[[redirects]]
+  from = "/support"
+  to = "/support.html"
+  status = 200
+
+[[redirects]]
+  from = "/app"
+  to = "/app.html"
+  status = 200
+
+[[redirects]]
+  from = "/subscribe"
+  to = "/app.html?subscribed=true"
+  status = 302
+  force = true
+
+[[redirects]]
+  from = "/subscribed"
+  to = "/app.html?subscribed=true"
+  status = 302
+  force = true
