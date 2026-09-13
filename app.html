@@ -2243,7 +2243,7 @@ function App(){
       window.db.collection('users').doc(uid).delete().catch(function(){});
       setCurrentUser(null);setUserLoaded(false);resetUserData();setUserName('');
       setShowAuth(false);setShowOnboard(false);
-      if(window.innerWidth>=1024){setShowLanding(true);}else{setShowOnboard(true);}
+      goToMarketingSite();
     }).catch(function(err){
       if(err.code==='auth/requires-recent-login'){
         window.alert('For security, please log out and log back in, then try deleting your account again.');
@@ -2323,6 +2323,12 @@ function App(){
     } else {
       shareTextOnly();
     }
+  }
+
+  // The public marketing site is index.html. Never send people back to the
+  // in-app landing page that used to live at /app.
+  function goToMarketingSite(){
+    window.location.href='/';
   }
 
   // Opens auth from landing page and pushes a history entry so browser back works
@@ -2544,7 +2550,7 @@ function App(){
   // Browser back button → return to landing page
   useEffect(function(){
     function onPop(e){
-      if(e.state&&e.state.fromLanding){setShowAuth(false);setShowLanding(true);}
+      if(e.state&&e.state.fromLanding){goToMarketingSite();}
     }
     window.addEventListener('popstate',onPop);
     return function(){window.removeEventListener('popstate',onPop);};
@@ -2570,7 +2576,7 @@ function App(){
             setShowAuth(true);
             setAuthMode(window._wantAuth);
           }else{
-            setShowLanding(true);history.replaceState({landing:true},'');
+            goToMarketingSite();
           }
         }
       },650);
@@ -3360,7 +3366,7 @@ function App(){
               </div>
             </div>
             <div className="flex items-center gap-3">
-              <button onClick={function(){setShowLanding(true);}} className="font-sans text-[11px] text-body opacity-30 hover:opacity-60 transition-opacity px-3 py-1.5 rounded-full" style={{border:'1px solid rgba(196,154,122,0.2)'}}>preview landing</button>
+              <button onClick={function(){goToMarketingSite();}} className="font-sans text-[11px] text-body opacity-30 hover:opacity-60 transition-opacity px-3 py-1.5 rounded-full" style={{border:'1px solid rgba(196,154,122,0.2)'}}>preview landing</button>
               <div className="flex items-center gap-2 px-3.5 py-2 rounded-full" style={{background:'white',border:'1px solid #C49A7A',boxShadow:'0 0 12px rgba(196,154,122,0.1)'}}>
                 <span className="text-[16px]">{'\uD83D\uDD25'}</span>
                 <div className="text-right"><p className="font-sans text-[15px] font-bold text-headline leading-none">{streak}</p><p className="font-sans text-[8px] text-body opacity-40">day streak</p></div>
@@ -5505,7 +5511,7 @@ function App(){
 
     {showAuth&&<div className="fixed inset-0 z-[95] flex flex-col items-center justify-center px-6 overflow-y-auto py-10" style={{background:'linear-gradient(160deg, #F8EAEA 0%, #FAF6F2 50%, #F5DDDE 100%)'}}>
       <div className="w-full max-w-sm fade-in">
-        <button onClick={function(){setShowAuth(false);setShowLanding(true);history.replaceState({landing:true},'');}} className="flex items-center gap-1.5 font-sans text-[13px] text-body opacity-50 hover:opacity-80 transition-opacity mb-8 active:scale-[0.97]">
+        <button onClick={function(){goToMarketingSite();}} className="flex items-center gap-1.5 font-sans text-[13px] text-body opacity-50 hover:opacity-80 transition-opacity mb-8 active:scale-[0.97]">
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
           back
         </button>
