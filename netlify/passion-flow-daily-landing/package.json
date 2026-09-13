@@ -1,0 +1,7 @@
+{
+  "name": "passion-flow-daily",
+  "version": "1.0.0",
+  "private": true,
+  "comment": "No dependencies on purpose. The Netlify functions use only Node built-ins (crypto) and global fetch, so they deploy correctly via drag-and-drop, which has no npm install step.",
+  "dependencies": {}
+}

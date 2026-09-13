@@ -1,0 +1,702 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Passion Flow Daily — Never wonder what to do next</title>
+  <meta name="description" content="Explore hundreds of meaningful ideas, add your own, or let Passion Flow choose for you across Create, Mindset, Connect, Move, and Reset." />
+  <meta name="theme-color" content="#FAF6F2" />
+  <link rel="icon" type="image/png" href="/assets/icon.png" />
+  <link rel="apple-touch-icon" href="/assets/icon.png" />
+  <meta property="og:title" content="Passion Flow Daily" />
+  <meta property="og:description" content="Never wonder what to do next. One meaningful idea at a time." />
+  <meta property="og:image" content="/assets/icon.png" />
+  <meta property="og:type" content="website" />
+  <meta name="apple-itunes-app" content="app-id=6778534847" />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          screens: { sm: '700px' },
+          fontFamily: { serif: ['Playfair Display','Georgia','serif'], sans: ['Inter','system-ui','sans-serif'] },
+          colors: { body: '#614433', headline: '#2E1C16', cream: '#FAF6F2' }
+        }
+      }
+    };
+  </script>
+  <style>
+    * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+    html { scroll-behavior: smooth; }
+    /* overflow-x:hidden turns the root into a scroll container, which stops the
+       nav from sticking. Clip contains the same way without that side effect. */
+    html, body { overflow-x: hidden; max-width: 100%; }
+    @supports (overflow-x: clip) {
+      html, body { overflow-x: clip; }
+    }
+    /* Keep anchor targets clear of the pinned nav. */
+    html { scroll-padding-top: 106px; }
+    @media (min-width: 768px) { html { scroll-padding-top: 78px; } }
+    body {
+      margin: 0;
+      font-family: Inter, system-ui, sans-serif;
+      color: #614433;
+      min-height: 100vh;
+      background: linear-gradient(160deg, rgba(252,228,236,0.62) 0%, #FFFFFF 36%, rgba(237,230,246,0.42) 68%, rgba(224,242,233,0.48) 100%);
+      background-attachment: fixed;
+    }
+    h1, h2, h3 { color: #2E1C16; }
+    .copy { color: rgba(97,68,51,0.7); }
+    .quiet { color: rgba(97,68,51,0.4); }
+    .nav-link { color: #2E1C16; text-decoration: none; }
+    .nav-link:hover { text-decoration: underline; }
+    /* Deep enough that white text clears 4.5:1 at both ends of the gradient. */
+    .btn-primary {
+      background: linear-gradient(180deg, #9C6742 0%, #8A5734 100%);
+      color: #FFFFFF;
+      border: 1px solid rgba(46,28,22,0.18);
+      box-shadow: 0 6px 20px rgba(138,87,52,0.30);
+    }
+    .btn-secondary {
+      background: #FAF6F2;
+      color: #2E1C16;
+      border: 1px solid rgba(46,28,22,0.28);
+    }
+    .area-chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 12px;
+      border-radius: 999px;
+      font-family: Inter, system-ui, sans-serif;
+      font-size: 12px;
+      font-weight: 600;
+      color: #2E1C16;
+    }
+    .btn-web {
+      background: #ffffff;
+      color: #2E1C16;
+      border: 1px solid rgba(46,28,22,0.16);
+    }
+    .pastel-sea {
+      background: linear-gradient(135deg, #FCE4EC 0%, #FAF6F2 38%, #EDE6F6 72%, #E0F2E9 100%);
+      border: 1px solid #8A5734;
+    }
+    /* The pills never wrap, so their width sets the floor for the hero's left
+       column. Scaling them keeps the phone on screen down to a 700px tablet. */
+    .proof-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: clamp(5px, 0.77vw, 8px);
+      padding: clamp(6px, 0.75vw, 8px) clamp(10px, 1.35vw, 14px) clamp(6px, 0.75vw, 8px) clamp(8px, 0.96vw, 10px);
+      border-radius: 999px;
+      font-family: Inter, system-ui, sans-serif;
+      font-size: clamp(10px, 1.15vw, 12px);
+      font-weight: 600;
+      color: #2E1C16;
+      white-space: nowrap;
+    }
+    .proof-dot {
+      width: clamp(14px, 1.7vw, 18px);
+      height: clamp(14px, 1.7vw, 18px);
+      border-radius: 99px;
+      flex-shrink: 0;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-size: clamp(7px, 0.77vw, 8px);
+    }
+    .proof-dots { gap: 2px; }
+    .proof-dots span { width: clamp(6px, 0.67vw, 7px); height: clamp(6px, 0.67vw, 7px); border-radius: 99px; }
+    /* All three proof pills have to share one line on a phone, so below 700px
+       every metric is a fraction of the viewport rather than a fixed size. */
+    @media (max-width: 699px) {
+      .proof-pill {
+        gap: min(5px, 1.03vw);
+        padding: min(7.5px, 1.54vw) min(10px, 2.05vw);
+        font-size: min(10.6px, 2.18vw);
+        letter-spacing: -0.01em;
+      }
+      .proof-dot { width: min(16px, 3.33vw); height: min(16px, 3.33vw); font-size: min(7.5px, 1.54vw); }
+      .proof-dots { gap: min(1.25px, 0.26vw); }
+      .proof-dots span { width: min(6px, 1.28vw); height: min(6px, 1.28vw); }
+      /* Share the full width so the row reaches both edges of the screen. */
+      .proof-pill { flex: 1 1 0; justify-content: center; }
+      /* Stretch the five areas across the full width of the hero. */
+      .area-chip {
+        flex: 1 1 auto;
+        justify-content: center;
+        gap: min(3px, 0.85vw);
+        padding: min(5px, 1.28vw) min(6px, 1.6vw);
+        font-size: min(10px, 2.2vw);
+        letter-spacing: -0.01em;
+      }
+    }
+    @keyframes landIn { from { opacity: 0; transform: translateY(18px); } to { opacity: 1; transform: translateY(0); } }
+    .land-in { animation: landIn 0.7s ease forwards; }
+    .phone {
+      --pw: 270px;
+      position: relative;
+      width: var(--pw);
+      flex-shrink: 0;
+    }
+    .phone-bezel {
+      position: relative;
+      border-radius: calc(var(--pw) * 0.155);
+      padding: calc(var(--pw) * 0.03);
+      background: linear-gradient(180deg, #3a3a3c 0%, #1c1c1e 18%, #111 100%);
+      box-shadow: 0 28px 72px rgba(0,0,0,0.22), 0 0 80px rgba(252,228,236,0.35), 0 0 90px rgba(224,242,233,0.25);
+    }
+    .phone-screen {
+      position: relative;
+      overflow: hidden;
+      border-radius: calc(var(--pw) * 0.126);
+      background: #FAF6F2;
+      aspect-ratio: 941 / 2048;
+    }
+    .phone-screen video,
+    .phone-screen img {
+      display: block;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: top center;
+    }
+    .phone-island {
+      position: absolute; left: 50%; top: calc(var(--pw) * 0.037); transform: translateX(-50%);
+      width: calc(var(--pw) * 0.318); height: calc(var(--pw) * 0.089);
+      background: #0B0B0C; border-radius: 99px; z-index: 3; pointer-events: none;
+    }
+    .phone-btn {
+      position: absolute;
+      background: #2a2a2c;
+      border-radius: 2px;
+      width: calc(var(--pw) * 0.011);
+    }
+    .phone-btn-mute { left: calc(var(--pw) * -0.011); top: calc(var(--pw) * 0.34); height: calc(var(--pw) * 0.104); }
+    .phone-btn-vol { left: calc(var(--pw) * -0.011); top: calc(var(--pw) * 0.489); height: calc(var(--pw) * 0.178); }
+    .phone-btn-power { right: calc(var(--pw) * -0.011); top: calc(var(--pw) * 0.437); height: calc(var(--pw) * 0.237); }
+    /* A phone shows the whole device; the four-up column above 700px tucks
+       it past the card edge, as it did originally. */
+    .phone-tucked { margin-bottom: 0; }
+    /* On a phone the step card runs wide and short: copy left, device tucked
+       into the right edge. Above 700px it returns to the original four-up
+       column with the device tucked underneath the copy. Every desktop value
+       reaches its original fixed size by 1024px and only scales below that. */
+    .step-card { display: flex; align-items: stretch; gap: 10px; padding: 0 0 0 14px; }
+    .step-card-copy { flex: 1; min-width: 0; padding: 18px 0; }
+    .step-card-media { display: flex; align-items: center; flex-shrink: 0; padding: 12px 12px 12px 0; }
+    .step-card h3 { font-size: 19px; }
+    .step-card .step-body { font-size: 12.5px; }
+    .step-card .step-body-sm { font-size: 11.5px; }
+    @media (min-width: 700px) {
+      .phone-tucked { margin-bottom: calc(var(--pw) * -0.34); }
+      .step-card { flex-direction: column; gap: 0; padding: clamp(18px, 2.73vw, 28px) clamp(14px, 1.9vw, 24px) 0; }
+      .step-card-copy { padding: 0 0 clamp(12px, 1.95vw, 20px); }
+      .step-card-media { margin-top: auto; align-items: flex-end; justify-content: center; padding: 12px 0 0; }
+      .step-card h3 { font-size: clamp(15px, 2.05vw, 21px); }
+      .step-card .step-body { font-size: clamp(10px, 1.17vw, 12px); }
+      .step-card .step-body-sm { font-size: clamp(9.5px, 1.07vw, 11px); }
+    }
+    /* Devices shrink with the viewport so a tablet gets the desktop
+       arrangement rather than its own layout. Hero stays the largest. */
+    .phone-hero { --pw: clamp(200px, 26vw, 270px); }
+    .phone-feature { --pw: clamp(186px, 24vw, 248px); }
+    .phone-step { --pw: clamp(112px, 16.6vw, 170px); }
+    @media (max-width: 699px) {
+      /* Two-up on phones, so every device has to stay small. */
+      /* Fill half the card: the columns are (100vw - 66px - 16px) / 2. */
+      .phone-hero { --pw: min(170px, calc(50vw - 43px)); }
+      .phone-feature { --pw: min(136px, 38vw); }
+      .phone-step { --pw: min(84px, 23vw); }
+    }
+    .no-scrollbar { scrollbar-width: none; -ms-overflow-style: none; }
+    .no-scrollbar::-webkit-scrollbar { display: none; }
+    /* On mobile the device sits on the left and the copy column on the right,
+       with the five areas in a full-width row below. Above 700px the wrapper
+       dissolves and its children join the section's own grid. */
+    .hero-grid { display: block; }
+    .hero-box {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+      column-gap: 16px;
+      row-gap: 14px;
+      align-items: stretch;
+    }
+    .hero-media { grid-column: 1; grid-row: 1; align-self: center; display: flex; justify-content: center; }
+    .hero-text {
+      grid-column: 2;
+      grid-row: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-start;
+      align-self: center;
+      gap: 8px;
+    }
+    .hero-eyebrow { align-self: flex-start; margin-bottom: 7px; width: fit-content; max-width: 100%; }
+    .hero-copy { display: flex; flex-direction: column; gap: 8px; }
+    /* One full-width band under the phone and the copy, above the buttons. */
+    .hero-chips { grid-column: 1 / -1; grid-row: 2; display: flex; align-items: stretch; gap: 4px; }
+    .hero-actions { margin-top: 20px; }
+    @media (min-width: 700px) {
+      .hero-grid { display: grid; grid-template-columns: 1fr auto; column-gap: clamp(32px, 5vw, 64px); align-items: center; }
+      .hero-box { display: contents; }
+      .hero-text { display: contents; }
+      .hero-eyebrow { grid-column: 1; grid-row: 1; align-self: end; justify-self: start; width: fit-content; max-width: 100%; margin-bottom: 16px; }
+      .hero-copy { grid-column: 1; grid-row: 2; align-self: end; display: block; flex: unset; gap: unset; }
+      .hero-chips { grid-column: 1; grid-row: 3; align-self: start; flex-wrap: wrap; gap: 8px; margin-top: 26px; }
+      .hero-actions { grid-column: 1; grid-row: 4; align-self: start; margin-top: 28px; }
+      .hero-media { grid-column: 2; grid-row: 1 / span 4; align-self: center; justify-self: center; }
+    }
+    /* Same Inter bold as the proof pills, and always a single line. */
+    .hero-eyebrow {
+      display: inline-flex;
+      align-items: center;
+      white-space: nowrap;
+      border-radius: 999px;
+      font-family: Inter, system-ui, sans-serif;
+      font-weight: 600;
+      line-height: 1.25;
+      font-size: min(10px, 2.35vw);
+      letter-spacing: 0.01em;
+      padding: 5px 9px;
+      color: #2E1C16;
+      background: linear-gradient(135deg, #FCE4EC 0%, #FAF6F2 38%, #EDE6F6 72%, #E0F2E9 100%);
+      border: 1px solid rgba(46,28,22,0.14);
+    }
+    @media (min-width: 700px) {
+      .hero-eyebrow {
+        text-transform: uppercase;
+        font-size: 12px;
+        letter-spacing: 0.14em;
+        padding: 8px 16px;
+        background: linear-gradient(135deg, #FCE4EC 0%, #FAF6F2 38%, #EDE6F6 72%, #E0F2E9 100%);
+      }
+    }
+    .five-dots { display: flex; gap: 7px; justify-content: center; }
+    .five-dots span { width: 8px; height: 8px; border-radius: 99px; }
+  </style>
+</head>
+<body>
+  <nav class="sticky top-0 z-50" style="background:linear-gradient(135deg, #FCE4EC 0%, #FAF6F2 38%, #EDE6F6 72%, #E0F2E9 100%);border-bottom:1px solid rgba(46,28,22,0.12);box-shadow:0 2px 14px rgba(46,28,22,0.07)">
+    <div class="flex items-center justify-between px-4 sm:px-8 lg:px-12 py-3.5">
+      <a href="/" class="flex items-center gap-2.5 no-underline">
+        <img src="/assets/icon.png" alt="Passion Flow Daily" class="w-[30px] h-[30px] rounded-full" style="border:1px solid rgba(46,28,22,0.12)" />
+        <span class="font-serif text-[15px] sm:text-[18px] text-headline font-semibold tracking-tight whitespace-nowrap">Passion Flow Daily</span>
+      </a>
+      <div class="hidden md:flex items-center gap-6 lg:gap-8">
+        <a href="#how-it-works" class="nav-link font-sans text-[13px] opacity-70 hover:opacity-100">How it works</a>
+        <a href="#pick-for-me" class="nav-link font-sans text-[13px] opacity-70 hover:opacity-100">Pick for Me</a>
+        <a href="#daily-flow" class="nav-link font-sans text-[13px] opacity-70 hover:opacity-100">Daily Flow</a>
+        <a href="#benefits" class="nav-link font-sans text-[13px] opacity-70 hover:opacity-100">Benefits</a>
+      </div>
+      <div class="flex items-center gap-2">
+        <a href="/app.html?auth=login" class="hidden md:block font-sans text-[13px] font-medium px-3 py-2 nav-link opacity-70">Log in</a>
+        <a href="https://apps.apple.com/us/app/passion-flow-daily/id6778534847" target="_blank" rel="noopener noreferrer" class="btn-primary font-sans text-[11px] sm:text-[13px] font-semibold px-3.5 sm:px-5 py-2 sm:py-2.5 rounded-full whitespace-nowrap">Get started</a>
+      </div>
+    </div>
+    <div class="flex md:hidden items-center justify-center gap-4 px-4 pb-2.5" style="border-top:1px solid rgba(46,28,22,0.06)">
+      <a href="#how-it-works" class="nav-link font-sans text-[10px] opacity-60 pt-2">How it works</a>
+      <a href="#pick-for-me" class="nav-link font-sans text-[10px] opacity-60 pt-2">Pick for Me</a>
+      <a href="#daily-flow" class="nav-link font-sans text-[10px] opacity-60 pt-2">Daily Flow</a>
+      <a href="#benefits" class="nav-link font-sans text-[10px] opacity-60 pt-2">Benefits</a>
+      <a href="/app.html?auth=login" class="nav-link font-sans text-[10px] opacity-60 pt-2">Log in</a>
+    </div>
+  </nav>
+
+  <section class="pt-6 sm:pt-14 lg:pt-28 pb-10 sm:pb-20 lg:pb-24 px-5 sm:px-8 lg:px-12 max-w-[1100px] mx-auto hero-grid land-in">
+    <div class="hero-box">
+      <div class="hero-media">
+        <div class="phone phone-hero" style="animation-delay:0.12s">
+          <div class="phone-btn phone-btn-mute"></div>
+          <div class="phone-btn phone-btn-vol"></div>
+          <div class="phone-btn phone-btn-power"></div>
+          <div class="phone-bezel">
+            <div class="phone-screen">
+              <video id="hero-app-video" src="/assets/hero-screen.mp4" poster="/assets/hero-poster.jpg" muted autoplay loop playsinline preload="auto"></video>
+              <div class="phone-island" aria-hidden="true"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="hero-text">
+        <span class="hero-eyebrow">For people who want to do it all</span>
+        <div class="hero-copy lg:text-left">
+          <h1 class="font-serif text-[22px] sm:text-[48px] lg:text-[52px] leading-[1.12] mb-0 sm:mb-5">Never wonder<br />what <span class="italic">to do next.</span></h1>
+          <p class="font-sans text-[12px] sm:text-[clamp(13.5px,1.96vw,17px)] copy leading-[1.45] mb-0 sm:mb-3 lg:mx-0">Explore hundreds of meaningful ideas, add your own,<br class="hidden sm:block" /> or let Passion Flow choose for you across Create, Mindset,<br class="hidden sm:block" /> Connect, Move, and Reset to create a life you’re <span class="whitespace-nowrap">excited to live.</span></p>
+          <p class="font-sans text-[min(11px,2.85vw)] sm:text-[clamp(11px,1.6vw,14px)] italic mb-0 text-headline sm:whitespace-nowrap">One meaningful idea at a time,<br class="sm:hidden" /> every part of your life,<br class="sm:hidden" /> one wheel at a time.</p>
+        </div>
+      </div>
+
+      <div class="hero-chips">
+        <span class="area-chip" style="background:linear-gradient(160deg, #FCE4EC 0%, rgba(255,255,255,0.96) 78%);border:1px solid #F0B8C8">✨ Create</span>
+        <span class="area-chip" style="background:linear-gradient(160deg, #FDEBD0 0%, rgba(255,255,255,0.96) 78%);border:1px solid #F0D0A0">📚 Mindset</span>
+        <span class="area-chip" style="background:linear-gradient(160deg, #EDE6F6 0%, rgba(255,255,255,0.96) 78%);border:1px solid #D4C2E8">💛 Connect</span>
+        <span class="area-chip" style="background:linear-gradient(160deg, #E0F2E9 0%, rgba(255,255,255,0.96) 78%);border:1px solid #A8D8B8">🏃 Move</span>
+        <span class="area-chip" style="background:linear-gradient(160deg, #FFF8E1 0%, rgba(255,255,255,0.96) 78%);border:1px solid #F0E0A0">🌿 Reset</span>
+      </div>
+    </div>
+
+    <div class="hero-actions">
+      <div class="flex flex-col sm:flex-row items-stretch sm:items-center justify-start gap-3 flex-wrap mb-3">
+        <a href="https://apps.apple.com/us/app/passion-flow-daily/id6778534847" target="_blank" rel="noopener noreferrer" class="btn-primary w-full sm:w-auto flex items-center justify-center gap-2 whitespace-nowrap font-sans text-[13px] sm:text-[14px] font-semibold px-5 sm:px-8 py-3.5 rounded-full transition-all hover:opacity-90 active:scale-[0.98]">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="#FFFFFF" aria-hidden="true"><path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.8-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/></svg>
+          Download on the App Store
+        </a>
+        <a href="/app.html?auth=signup" class="btn-web w-full sm:w-auto flex items-center justify-center font-sans text-[14px] font-semibold px-8 py-3.5 rounded-full transition-all hover:opacity-80 active:scale-[0.98]">Continue on web</a>
+      </div>
+      <p class="font-sans text-[12px] quiet mb-5 sm:mb-6 text-center sm:text-left">3 days free. Cancel anytime.</p>
+      <div class="flex flex-nowrap items-center justify-start gap-1 sm:gap-2 w-full">
+        <span class="proof-pill" style="background:linear-gradient(135deg, #FCE4EC 0%, #FAF6F2 38%, #EDE6F6 72%, #E0F2E9 100%);border:1px solid rgba(46,28,22,0.14)">
+          <span class="proof-dot" style="background:#fff;border:1px solid #F0B8C8">✨</span>
+          750+ curated ideas
+        </span>
+        <span class="proof-pill" style="background:linear-gradient(135deg, #FCE4EC 0%, #FAF6F2 38%, #EDE6F6 72%, #E0F2E9 100%);border:1px solid rgba(46,28,22,0.14)">
+          <span class="flex items-center proof-dots" aria-hidden="true">
+            <span style="background:#FCE4EC;border:1px solid #F0B8C8"></span>
+            <span style="background:#FDEBD0;border:1px solid #F0D0A0"></span>
+            <span style="background:#EDE6F6;border:1px solid #D4C2E8"></span>
+            <span style="background:#E0F2E9;border:1px solid #A8D8B8"></span>
+            <span style="background:#FFF8E1;border:1px solid #F0E0A0"></span>
+          </span>
+          5 parts of life
+        </span>
+        <span class="proof-pill" style="background:linear-gradient(135deg, #FCE4EC 0%, #FAF6F2 38%, #EDE6F6 72%, #E0F2E9 100%);border:1px solid rgba(46,28,22,0.14)">
+          <span class="proof-dot" style="background:#fff;border:1px solid #F0E0A0">💛</span>
+          Personalized to you
+        </span>
+      </div>
+    </div>
+  </section>
+
+  <section id="how-it-works" class="py-9 sm:py-20 px-5 sm:px-8 lg:px-12 max-w-[1100px] mx-auto">
+    <p class="font-sans text-[11px] font-semibold uppercase tracking-[0.15em] text-center mb-3 quiet">How it works</p>
+    <h2 class="font-serif text-[25px] sm:text-[36px] italic text-center mb-3">Choose. Do. Reflect. Remember.</h2>
+    <p class="font-sans text-[14px] sm:text-[15px] copy text-center mb-8 sm:mb-14 max-w-[520px] mx-auto leading-relaxed">Hundreds of meaningful ideas. Five parts of your life. One place to figure out what feels right today.</p>
+    <div class="grid grid-cols-1 sm:grid-cols-4 gap-3 sm:gap-5 lg:gap-6">
+
+      <div class="step-card rounded-[20px] sm:rounded-[24px] overflow-hidden" style="background:linear-gradient(90deg, #FCE4EC 0%, rgba(255,255,255,0.96) 78%);border:1px solid #F0B8C8">
+        <div class="step-card-copy">
+          <p class="font-sans text-[9px] sm:text-[10px] font-bold tracking-[0.15em] mb-1.5 sm:mb-2 quiet">STEP 01</p>
+          <h3 class="font-serif italic leading-[1.2] mb-2">Choose a part of your life.</h3>
+          <p class="font-sans step-body copy leading-relaxed">What sounds good today? Create something. Grow your mind. Connect with someone. Move your body. Or simply reset.</p>
+        </div>
+        <div class="step-card-media">
+          <div class="phone phone-step phone-tucked">
+            <div class="phone-bezel">
+              <div class="phone-screen">
+                <img src="/assets/app-home.webp" alt="Passion Flow Daily home screen with the five-area flow wheel" loading="lazy" width="941" height="2048" />
+                <div class="phone-island" aria-hidden="true"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="step-card rounded-[20px] sm:rounded-[24px] overflow-hidden" style="background:linear-gradient(90deg, #EDE6F6 0%, rgba(255,255,255,0.96) 78%);border:1px solid #D4C2E8">
+        <div class="step-card-copy">
+          <p class="font-sans text-[9px] sm:text-[10px] font-bold tracking-[0.15em] mb-1.5 sm:mb-2 quiet">STEP 02</p>
+          <h3 class="font-serif italic leading-[1.2] mb-2">Find your next idea.</h3>
+          <p class="font-sans step-body copy leading-relaxed mb-1.5 sm:mb-3">Browse curated ideas, shuffle for inspiration, add something of your own, or let Passion Flow pick for you.</p>
+          <p class="font-sans step-body-sm copy leading-relaxed">Want help with the whole day? Get one personalized idea for every part of your life with Pick My Daily Flow.</p>
+        </div>
+        <div class="step-card-media">
+          <div class="phone phone-step phone-tucked">
+            <div class="phone-bezel">
+              <div class="phone-screen">
+                <img src="/assets/app-focus-packs.webp" alt="Choosing a Create focus pack, with Pick for Me and add your own idea" loading="lazy" width="941" height="2048" />
+                <div class="phone-island" aria-hidden="true"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="step-card rounded-[20px] sm:rounded-[24px] overflow-hidden" style="background:linear-gradient(90deg, #FFF8E1 0%, rgba(255,255,255,0.96) 78%);border:1px solid #F0E0A0">
+        <div class="step-card-copy">
+          <p class="font-sans text-[9px] sm:text-[10px] font-bold tracking-[0.15em] mb-1.5 sm:mb-2 quiet">STEP 03</p>
+          <h3 class="font-serif italic leading-[1.2] mb-2">Reflect on your day.</h3>
+          <p class="font-sans step-body copy leading-relaxed">Check in with how your day felt, rate your flow, choose how you felt, and save a quick written or voice reflection.</p>
+        </div>
+        <div class="step-card-media">
+          <div class="phone phone-step phone-tucked">
+            <div class="phone-bezel">
+              <div class="phone-screen">
+                <img src="/assets/app-reflection.webp" alt="Daily reflection with a balance check, flow rating, feeling chips, and a written note" loading="lazy" width="941" height="2048" />
+                <div class="phone-island" aria-hidden="true"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="step-card rounded-[20px] sm:rounded-[24px] overflow-hidden" style="background:linear-gradient(90deg, #E0F2E9 0%, rgba(255,255,255,0.96) 78%);border:1px solid #A8D8B8">
+        <div class="step-card-copy">
+          <p class="font-sans text-[9px] sm:text-[10px] font-bold tracking-[0.15em] mb-1.5 sm:mb-2 quiet">STEP 04</p>
+          <h3 class="font-serif italic leading-[1.2] mb-2">Make it part of your life.</h3>
+          <p class="font-sans step-body copy leading-relaxed">Do it, check it off, save or share your day. Look back on everything you’ve tried and watch your life become more balanced over time.</p>
+        </div>
+        <div class="step-card-media">
+          <div class="phone phone-step phone-tucked">
+            <div class="phone-bezel">
+              <div class="phone-screen">
+                <img src="/assets/app-your-days.webp" alt="Your days, a running record of what you actually did across all five parts of life" loading="lazy" width="941" height="2048" />
+                <div class="phone-island" aria-hidden="true"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="pick-for-me" class="py-9 sm:py-20 px-5 sm:px-8 lg:px-12 max-w-[1100px] mx-auto">
+    <div class="pastel-sea rounded-[28px] p-5 sm:p-10 lg:p-12 grid grid-cols-2 gap-4 sm:gap-10 items-center">
+      <div>
+        <p class="font-sans text-[9px] sm:text-[11px] font-semibold uppercase tracking-[0.13em] mb-2 sm:mb-3 quiet">Pick for Me</p>
+        <h2 class="font-serif text-[min(16px,3.9vw)] sm:text-[min(36px,4.3vw)] italic leading-[1.15] mb-3 sm:mb-4">When you can’t<br />decide, we’ll pick.</h2>
+        <p class="font-sans text-[11px] sm:text-[15px] copy leading-relaxed mb-2 sm:mb-3">Know what part of life needs you, but not what to do? Get one meaningful idea chosen around your goals, interests, and recent flow.</p>
+        <p class="font-sans text-[10px] sm:text-[14px] copy italic mb-4 sm:mb-7">No endless browsing. No overthinking. Just somewhere meaningful to begin.</p>
+        <a href="https://apps.apple.com/us/app/passion-flow-daily/id6778534847" target="_blank" rel="noopener noreferrer" class="btn-primary inline-flex items-center justify-center text-center font-sans text-[11px] sm:text-[14px] font-semibold px-4 sm:px-8 py-2.5 sm:py-3.5 rounded-full">Pick for Me</a>
+      </div>
+      <div class="flex justify-center">
+        <div class="phone phone-feature">
+          <div class="phone-btn phone-btn-mute"></div>
+          <div class="phone-btn phone-btn-vol"></div>
+          <div class="phone-btn phone-btn-power"></div>
+          <div class="phone-bezel">
+            <div class="phone-screen">
+              <img src="/assets/app-pick-for-me.webp" alt="Pick for Me suggesting one Create idea, with add to my day or try another" loading="lazy" width="941" height="2048" />
+              <div class="phone-island" aria-hidden="true"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="daily-flow" class="py-9 sm:py-20 px-5 sm:px-8 lg:px-12 max-w-[1100px] mx-auto">
+    <div class="pastel-sea rounded-[28px] p-5 sm:p-10 lg:p-12 grid grid-cols-2 gap-4 sm:gap-10 items-center">
+      <div class="flex justify-center">
+        <div class="phone phone-feature">
+          <div class="phone-btn phone-btn-mute"></div>
+          <div class="phone-btn phone-btn-vol"></div>
+          <div class="phone-btn phone-btn-power"></div>
+          <div class="phone-bezel">
+            <div class="phone-screen">
+              <img src="/assets/app-daily-flow.webp" alt="Your Daily Flow with one idea each for Create, Mindset, Connect, Move, and Reset" loading="lazy" width="941" height="2048" />
+              <div class="phone-island" aria-hidden="true"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div>
+        <p class="font-sans text-[9px] sm:text-[11px] font-semibold uppercase tracking-[0.13em] mb-2 sm:mb-3 quiet">Your Daily Flow</p>
+        <h2 class="font-serif text-[min(16px,3.9vw)] sm:text-[min(36px,4.3vw)] italic leading-[1.15] mb-3 sm:mb-4">Five personalized ideas<br />for your day.</h2>
+        <p class="font-sans text-[11px] sm:text-[15px] copy leading-relaxed mb-2 sm:mb-3">Get one idea across Create, Mindset, Connect, Move, and Reset, picked around what matters to you.</p>
+        <p class="font-sans text-[10px] sm:text-[14px] copy italic mb-4 sm:mb-7">Add one. Add a few. Or add them all.</p>
+        <a href="https://apps.apple.com/us/app/passion-flow-daily/id6778534847" target="_blank" rel="noopener noreferrer" class="btn-primary inline-flex items-center justify-center text-center font-sans text-[11px] sm:text-[14px] font-semibold px-4 sm:px-8 py-2.5 sm:py-3.5 rounded-full">Pick My Daily Flow</a>
+      </div>
+    </div>
+  </section>
+
+  <section id="identity" class="py-9 sm:py-20 px-5 sm:px-8 lg:px-12 max-w-[1100px] mx-auto">
+    <div class="pastel-sea rounded-[28px] p-5 sm:p-10 lg:p-12 grid grid-cols-2 gap-4 sm:gap-10 lg:gap-16 items-center">
+      <div class="text-left">
+        <p class="font-sans text-[9px] sm:text-[11px] font-semibold uppercase tracking-[0.13em] mb-2 sm:mb-3 quiet">For the person with a million interests</p>
+        <h2 class="font-serif text-[min(16px,3.9vw)] sm:text-[min(40px,4.3vw)] italic leading-[1.15] mb-3 sm:mb-6">Life is too short<br />to only be one thing.</h2>
+        <p class="font-sans text-[11px] sm:text-[18px] copy leading-relaxed mb-3 sm:mb-5">You can want to create and rest. Learn and play. Build something and call someone you love. Move your body and make art.</p>
+        <p class="font-sans text-[11px] sm:text-[18px] copy leading-relaxed">Passion Flow Daily helps you make room for more of the life you want to live.</p>
+      </div>
+      <div class="flex justify-center">
+        <div class="phone phone-feature">
+          <div class="phone-btn phone-btn-mute"></div>
+          <div class="phone-btn phone-btn-vol"></div>
+          <div class="phone-btn phone-btn-power"></div>
+          <div class="phone-bezel">
+            <div class="phone-screen">
+              <img src="/assets/app-day-complete.webp" alt="Day Complete recap with streak, total sessions, and a saved reflection" loading="lazy" width="941" height="2048" />
+              <div class="phone-island" aria-hidden="true"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="ideas" class="py-9 sm:py-20 px-5 sm:px-8 lg:px-12 max-w-[1100px] mx-auto">
+    <p class="font-sans text-[11px] font-semibold uppercase tracking-[0.15em] text-center mb-3 quiet">Explore 750+ curated ideas</p>
+    <h2 class="font-serif text-[28px] sm:text-[36px] italic text-center mb-4">You’ll never run out<br/>of things to try.</h2>
+    <p class="font-sans text-[14px] sm:text-[15px] copy text-center mb-10 max-w-[580px] mx-auto leading-relaxed">From hobbies and creative projects to friendships, learning, movement, self-care, nature, and little adventures — there’s always somewhere meaningful to begin.</p>
+    <div class="idea-grid grid grid-cols-2 sm:grid-cols-5 gap-3 sm:gap-4 items-stretch">
+      <div id="idea-columns" class="contents"></div>
+      <a href="https://apps.apple.com/us/app/passion-flow-daily/id6778534847" target="_blank" rel="noopener noreferrer" class="idea-promo-mobile sm:hidden rounded-[20px] p-3 flex flex-col no-underline h-full" style="background:#FFFDFB;border:1px solid rgba(46,28,22,0.12);box-shadow:0 6px 20px rgba(46,28,22,0.07)">
+        <p class="font-serif italic text-[13px] text-headline leading-tight">Your Daily Flow ✨</p>
+        <p class="font-sans text-[8px] font-semibold text-headline mt-0.5 mb-2 leading-snug">Five ideas picked around you.</p>
+        <div class="flex-1 flex flex-col justify-between gap-1">
+          <div class="rounded-[7px] px-1.5 py-1" style="background:#FCE4EC;border:1px solid #F0B8C8">
+            <p class="font-sans text-[6.5px] font-bold uppercase tracking-[0.08em] leading-none mb-[3px]" style="color:#A9647F">✨ Create</p>
+            <p class="font-sans text-[7.5px] text-headline leading-tight">Photograph tiny things</p>
+          </div>
+          <div class="rounded-[7px] px-1.5 py-1" style="background:#FDEBD0;border:1px solid #F0D0A0">
+            <p class="font-sans text-[6.5px] font-bold uppercase tracking-[0.08em] leading-none mb-[3px]" style="color:#9E7436">📚 Mindset</p>
+            <p class="font-sans text-[7.5px] text-headline leading-tight">5 minutes of breathing</p>
+          </div>
+          <div class="rounded-[7px] px-1.5 py-1" style="background:#EDE6F6;border:1px solid #D4C2E8">
+            <p class="font-sans text-[6.5px] font-bold uppercase tracking-[0.08em] leading-none mb-[3px]" style="color:#77639F">💛 Connect</p>
+            <p class="font-sans text-[7.5px] text-headline leading-tight">Make pizza with Mom</p>
+          </div>
+          <div class="rounded-[7px] px-1.5 py-1" style="background:#E0F2E9;border:1px solid #A8D8B8">
+            <p class="font-sans text-[6.5px] font-bold uppercase tracking-[0.08em] leading-none mb-[3px]" style="color:#43805F">🏃 Move</p>
+            <p class="font-sans text-[7.5px] text-headline leading-tight">A low-tide beach walk</p>
+          </div>
+          <div class="rounded-[7px] px-1.5 py-1" style="background:#FFF8E1;border:1px solid #F0E0A0">
+            <p class="font-sans text-[6.5px] font-bold uppercase tracking-[0.08em] leading-none mb-[3px]" style="color:#8C7C33">🌿 Reset</p>
+            <p class="font-sans text-[7.5px] text-headline leading-tight">Cook something new</p>
+          </div>
+        </div>
+        <span class="btn-primary mt-2 flex items-center justify-center font-sans text-[9px] font-semibold py-1.5 rounded-full">Add all to my day</span>
+        <span class="font-sans text-[7.5px] quiet text-center mt-1.5">Or add your own idea</span>
+      </a>
+    </div>
+    <p class="font-sans text-[13px] sm:text-[14px] copy text-center mt-8">Browse when you want to explore. Let Passion Flow choose when you don’t.</p>
+  </section>
+
+  <section id="benefits" class="py-9 sm:py-20 px-5 sm:px-8 lg:px-12 max-w-[1100px] mx-auto">
+    <p class="font-sans text-[11px] font-semibold uppercase tracking-[0.15em] text-center mb-3 quiet">A different kind of day</p>
+    <h2 class="font-serif text-[22px] sm:text-[36px] italic text-center mb-6 sm:mb-10">From “I should do that someday”<br />to “I actually did that.”</h2>
+    <div class="grid grid-cols-2 gap-3 sm:gap-6">
+      <div class="rounded-[20px] sm:rounded-[24px] p-4 sm:p-8" style="background:white;border:1px solid rgba(46,28,22,0.08)">
+        <p class="font-sans text-[9px] sm:text-[11px] font-bold uppercase tracking-[0.12em] mb-3 sm:mb-5 quiet">Without<br class="sm:hidden" /> Passion Flow Daily</p>
+        <div class="space-y-2.5 sm:space-y-3">
+          <p class="font-sans text-[11px] sm:text-[13px] copy flex gap-2 sm:gap-3"><span>✕</span>Save ideas you mean to try.</p>
+          <p class="font-sans text-[11px] sm:text-[13px] copy flex gap-2 sm:gap-3"><span>✕</span>Spend free time scrolling because nothing comes to mind.</p>
+          <p class="font-sans text-[11px] sm:text-[13px] copy flex gap-2 sm:gap-3"><span>✕</span>Keep saying, “I should do that someday.”</p>
+          <p class="font-sans text-[11px] sm:text-[13px] copy flex gap-2 sm:gap-3"><span>✕</span>Let your days start looking a little too similar.</p>
+        </div>
+      </div>
+      <div class="pastel-sea rounded-[20px] sm:rounded-[24px] p-4 sm:p-8">
+        <p class="font-sans text-[9px] sm:text-[11px] font-bold uppercase tracking-[0.12em] mb-3 sm:mb-5 quiet">With<br class="sm:hidden" /> Passion Flow Daily</p>
+        <div class="space-y-2.5 sm:space-y-3">
+          <p class="font-sans text-[11px] sm:text-[13px] text-headline flex gap-2 sm:gap-3"><span>✓</span>Always have somewhere meaningful to begin.</p>
+          <p class="font-sans text-[11px] sm:text-[13px] text-headline flex gap-2 sm:gap-3"><span>✓</span>Make room for more than one part of yourself.</p>
+          <p class="font-sans text-[11px] sm:text-[13px] text-headline flex gap-2 sm:gap-3"><span>✓</span>Try the hobby, take the walk, call the person, make the thing.</p>
+          <p class="font-sans text-[11px] sm:text-[13px] text-headline flex gap-2 sm:gap-3"><span>✓</span>Turn inspiration into days you actually lived.</p>
+        </div>
+      </div>
+    </div>
+    <p class="font-serif italic text-[18px] text-center mt-10">Same life. More of you in it.</p>
+  </section>
+
+
+  <section class="py-12 sm:py-20 px-5 sm:px-8 text-center">
+    <div class="pastel-sea max-w-[580px] mx-auto rounded-[24px] sm:rounded-[32px] px-6 sm:px-12 py-10 sm:py-14" style="box-shadow:0 12px 40px rgba(46,28,22,0.06)">
+      <h2 class="font-serif text-[28px] sm:text-[36px] italic mb-4">Your next meaningful<br />idea is waiting.</h2>
+      <p class="font-sans text-[15px] copy leading-relaxed mb-8">You do not have to reinvent your life.<br />Just begin with one thing today.</p>
+      <a href="https://apps.apple.com/us/app/passion-flow-daily/id6778534847" target="_blank" rel="noopener noreferrer" class="btn-primary w-full flex items-center justify-center gap-2 whitespace-nowrap font-sans text-[13px] sm:text-[15px] font-semibold px-5 sm:px-10 py-4 rounded-full mb-3">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="#FFFFFF" aria-hidden="true"><path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.8-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/></svg>
+        Download on the App Store
+      </a>
+      <a href="/app.html?auth=signup" class="btn-web w-full flex items-center justify-center whitespace-nowrap font-sans text-[13px] sm:text-[15px] font-semibold px-5 sm:px-10 py-4 rounded-full mb-4">Continue on web</a>
+      <p class="font-sans text-[12px] quiet mb-4">3 days free. Cancel anytime.</p>
+      <a href="/app.html?auth=login" class="nav-link font-sans text-[13px] opacity-60">Already have an account? Log in</a>
+      <div class="five-dots mt-8" aria-hidden="true">
+        <span style="background:#FCE4EC;border:1px solid #F0B8C8"></span>
+        <span style="background:#FDEBD0;border:1px solid #F0D0A0"></span>
+        <span style="background:#EDE6F6;border:1px solid #D4C2E8"></span>
+        <span style="background:#E0F2E9;border:1px solid #A8D8B8"></span>
+        <span style="background:#FFF8E1;border:1px solid #F0E0A0"></span>
+      </div>
+    </div>
+  </section>
+
+  <footer class="py-8 px-5 sm:px-12 text-center" style="border-top:1px solid rgba(46,28,22,0.08)">
+    <p class="font-serif text-[13px] italic quiet">Passion Flow Daily · SyCorp LLC</p>
+    <p class="font-sans text-[10px] quiet mt-1">made with love, for the ones who want to live fully</p>
+    <div class="flex items-center justify-center gap-1 mt-4 flex-wrap">
+      <a href="/terms.html" class="nav-link font-sans text-[11px] opacity-50 px-2.5 py-1">Terms of Use</a>
+      <span class="w-[3px] h-[3px] rounded-full" style="background:rgba(46,28,22,0.2)"></span>
+      <a href="/privacy.html" class="nav-link font-sans text-[11px] opacity-50 px-2.5 py-1">Privacy Policy</a>
+      <span class="w-[3px] h-[3px] rounded-full" style="background:rgba(46,28,22,0.2)"></span>
+      <a href="/support.html" class="nav-link font-sans text-[11px] opacity-50 px-2.5 py-1">Support</a>
+      <span class="w-[3px] h-[3px] rounded-full" style="background:rgba(46,28,22,0.2)"></span>
+      <a href="mailto:passionflow.studio@gmail.com" class="nav-link font-sans text-[11px] opacity-50 px-2.5 py-1">Contact</a>
+    </div>
+  </footer>
+
+<script>
+(function(){
+  var v=document.getElementById('hero-app-video');
+  if(v&&v.paused){v.muted=true;v.play().catch(function(){});}
+})();
+var IDEA_AREAS = [
+  {emoji:'✨',label:'Create',desc:'Build, express, and create.',color:'#FCE4EC',border:'#F0B8C8',packs:[
+    {e:'🎨',l:'Creative Projects',ideas:['Take a painting class even if you think you cannot paint','Film your day like a short documentary','Start a 30-day watercolor challenge']},
+    {e:'💰',l:'Money Making',ideas:['Write a pitch for your side hustle idea','Create and list a simple digital product','Find one skill you have that people pay for']},
+    {e:'🎵',l:'Music',ideas:['Learn a song completely by ear','Attend a live show this week','Record a voice memo of a melody in your head']},
+    {e:'✍️',l:'Writing',ideas:['Write the first page of your book today','Journal at a cafe with your phone face-down','Write a poem and send it to one person']},
+    {e:'📸',l:'Creative Living',ideas:['Redecorate one corner of your room entirely','Buy a disposable camera and use every single shot','Create a mood board for the life you want']}
+  ]},
+  {emoji:'📚',label:'Mindset',desc:'Grow your mind with intention.',color:'#FDEBD0',border:'#F0D0A0',packs:[
+    {e:'📖',l:'Reading',ideas:['Read for an hour at a bookstore or library','Start the book you have been meaning to read for months','Read outside with no distractions, just you and the pages']},
+    {e:'🌅',l:'Morning Rituals',ideas:['Watch the sunrise with absolutely no phone','Write 3 things you are grateful for before you get up','Make your bed beautifully and begin the day with intention']},
+    {e:'🧠',l:'Learning',ideas:['Watch a documentary on something you know nothing about','Spend 30 minutes learning one new skill today','Read about a topic completely outside your comfort zone']},
+    {e:'📝',l:'Journaling',ideas:['Write your personal mission statement from scratch','Answer: what would I do if I were not afraid?','Brain dump every single thought on your mind right now']},
+    {e:'🌱',l:'Personal Growth',ideas:['Write a letter to yourself 5 years from now','Pick one habit to build and write your first action step','Spend 20 focused minutes on a goal that actually matters']}
+  ]},
+  {emoji:'💛',label:'Connect',desc:'Strengthen your relationships.',color:'#EDE6F6',border:'#D4C2E8',packs:[
+    {e:'💌',l:'Friendships',ideas:['Send a voice note to 3 people you have been thinking about','Plan a spontaneous hangout for this week','Write a handwritten note to someone who made a difference']},
+    {e:'🏡',l:'Family',ideas:['Cook a full meal together from scratch tonight','Pull out old family photos and spend an evening with the memories','Call a family member just to say hi with no agenda']},
+    {e:'💕',l:'Relationships',ideas:['Plan a completely phone-free evening together','Write down 10 things you love about your partner right now','Try one thing completely new together this week']},
+    {e:'🤝',l:'Community',ideas:['Volunteer somewhere local for a morning','Introduce yourself to a neighbor you have never spoken to','Give 3 genuine compliments to people you see today']},
+    {e:'🌿',l:'Nature',ideas:['Go on a walk with no destination and no phone','Sit outside and just watch the sky for 10 minutes','Have a picnic somewhere you have never been before']}
+  ]},
+  {emoji:'🏃',label:'Move',desc:'Feel alive in your body.',color:'#E0F2E9',border:'#A8D8B8',packs:[
+    {e:'🚶',l:'Walks',ideas:['Walk somewhere you have never explored before','Take a long golden-hour walk with music you love','Walk to your coffee shop instead of driving — feel the city']},
+    {e:'💪',l:'Strength',ideas:['Do a full-body dumbbell workout start to finish','Try your first barre or pilates class','Complete a 30-minute strength circuit, no breaks']},
+    {e:'🧘',l:'Stretching',ideas:['Do a 20-minute morning yoga flow before your phone','Try a full restorative yoga class today','Stretch for 10 slow minutes before bed tonight']},
+    {e:'💃',l:'Dance',ideas:['Have a solo dance party in your room right now','Learn a short dance choreography from a video','Try a dance cardio class — it is hard to feel sad while dancing']},
+    {e:'🌲',l:'Outdoor Adventures',ideas:['Hike a trail you have never done before','Go kayaking or paddleboarding for the first time','Bike somewhere completely new with no fixed route']}
+  ]},
+  {emoji:'🌿',label:'Reset',desc:'Recharge with intention.',color:'#FFF8E1',border:'#F0E0A0',packs:[
+    {e:'🧖',l:'Self Care',ideas:['Do your full skincare routine slowly with no rushing','Run a hot bath with candles and music and actually enjoy it','Book yourself a massage — you have earned it']},
+    {e:'🌙',l:'Wind Down',ideas:['Turn off every screen an hour before bed tonight','Make chamomile tea and write in your journal before sleeping','Do a slow, gentle stretch routine to close your evening']},
+    {e:'🍳',l:'Nourish',ideas:['Cook a full healthy meal from scratch — no shortcuts','Try a recipe from a cuisine you have never cooked before','Prep your meals for the entire week in one afternoon']},
+    {e:'🛁',l:'Relaxation',ideas:['Light a candle and do absolutely nothing for one hour','Read something purely for pleasure with no agenda at all','Spend a full afternoon with no plan and no guilt about it']},
+    {e:'📵',l:'Digital Detox',ideas:['Delete 3 apps that drain your energy right now','Spend a full afternoon with zero phone — see how it feels','Clear your inbox: unsubscribe from everything you ignore']}
+  ]}
+];
+var expandedPack = null;
+function renderIdeaColumns() {
+  var root = document.getElementById('idea-columns');
+  if (!root) return;
+  root.innerHTML = IDEA_AREAS.map(function(area) {
+    return '<div class="rounded-[20px] p-5" style="background:linear-gradient(90deg, ' + area.color + ' 0%, rgba(255,255,255,0.96) 78%);border:1px solid ' + area.border + '">' +
+      '<div class="flex items-center gap-2 mb-1"><span class="text-[18px]">' + area.emoji + '</span><span class="font-sans text-[13px] font-bold text-headline">' + area.label + '</span></div>' +
+      '<p class="font-sans text-[10px] copy mb-3 leading-snug">' + area.desc + '</p>' +
+      '<div class="space-y-1.5">' + area.packs.map(function(p) {
+        var key = area.label + p.l;
+        var isOpen = expandedPack === key;
+        var ideas = isOpen ? '<div class="mt-1 rounded-[8px] p-2" style="background:rgba(255,255,255,0.7)"><div class="space-y-1 mb-2">' +
+          p.ideas.map(function(idea) {
+            return '<div class="px-2 py-1.5 rounded-[6px]" style="background:white;border:1px solid rgba(46,28,22,0.28)"><p class="font-sans text-[9px] text-headline leading-snug">' + idea + '</p></div>';
+          }).join('') +
+          '</div><p class="font-sans text-[8px] quiet text-center italic">+ many more ideas in the app</p></div>' : '';
+        return '<div><button type="button" data-pack="' + key.replace(/"/g,'') + '" class="pack-toggle w-full flex items-center gap-1 px-2.5 py-1.5 rounded-[8px] text-left" style="background:' + (isOpen ? 'rgba(255,255,255,0.95)' : 'rgba(255,255,255,0.8)') + ';border:1px solid ' + (isOpen ? 'rgba(46,28,22,0.45)' : 'rgba(46,28,22,0.22)') + '">' +
+          '<span class="text-[11px]">' + p.e + '</span><span class="font-sans text-[10px] font-medium text-headline flex-1">' + p.l + '</span>' +
+          '<span class="font-sans text-[9px] quiet" style="display:inline-block;transform:' + (isOpen ? 'rotate(90deg)' : 'rotate(0deg)') + '">›</span></button>' + ideas + '</div>';
+      }).join('') + '</div></div>';
+  }).join('');
+  root.querySelectorAll('.pack-toggle').forEach(function(btn) {
+    btn.addEventListener('click', function() {
+      expandedPack = expandedPack === btn.getAttribute('data-pack') ? null : btn.getAttribute('data-pack');
+      renderIdeaColumns();
+    });
+  });
+}
+renderIdeaColumns();
+</script>
+</body>
+</html>
